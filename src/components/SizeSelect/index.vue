@@ -17,10 +17,10 @@ export default {
   data() {
     return {
       sizeOptions: [
-        { label: 'Default', value: 'default' },
-        { label: 'Medium', value: 'medium' },
-        { label: 'Small', value: 'small' },
-        { label: 'Mini', value: 'mini' }
+        { label: '默认', value: 'default' },
+        { label: '中等', value: 'medium' },
+        { label: '小号', value: 'small' },
+        { label: '迷你', value: 'mini' }
       ]
     }
   },
@@ -35,7 +35,7 @@ export default {
       this.$store.dispatch('app/setSize', size)
       this.refreshView()
       this.$message({
-        message: 'Switch Size Success',
+        message: '选择设置成功~',
         type: 'success'
       })
     },
