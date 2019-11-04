@@ -84,14 +84,30 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/documentation',
+    path: '/customer',
     component: Layout,
+    redirect: '/customer/list',
+    name: 'Customer',
+    meta: {
+      title: '客户管理',
+      icon: 'example'
+    },
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/documentation/index'),
-        name: 'Documentation',
-        meta: { title: '客户管理', icon: 'documentation', affix: true }
+        path: 'list',
+        component: () => import('@/views/customer/list'),
+        name: '客户列表',
+        meta: {
+          title: '客户列表'
+        }
+      },
+      {
+        path: 'add',
+        component: () => import('@/views/customer/add'),
+        name: '添加客户',
+        meta: {
+          title: '添加客户'
+        }
       }
     ]
   },
@@ -128,19 +144,6 @@ export const constantRoutes = [
         component: () => import('@/views/documentation/index'),
         name: 'Documentation',
         meta: { title: '跟单管理', icon: 'documentation', affix: true }
-      }
-    ]
-  },
-  {
-    path: '/guide',
-    component: Layout,
-    redirect: '/guide/index',
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/guide/index'),
-        name: 'Guide',
-        meta: { title: '使用帮助', icon: 'guide', noCache: true }
       }
     ]
   },
