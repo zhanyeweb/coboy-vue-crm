@@ -1,13 +1,13 @@
 <template>
   <el-form>
-    <el-form-item label="Name">
+    <el-form-item label="名称">
       <el-input v-model.trim="user.name" />
     </el-form-item>
     <el-form-item label="Email">
       <el-input v-model.trim="user.email" />
     </el-form-item>
     <el-form-item>
-      <el-button type="primary" @click="submit">Update</el-button>
+      <el-button type="primary" @click="submit">修改</el-button>
     </el-form-item>
   </el-form>
 </template>

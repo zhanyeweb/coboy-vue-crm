@@ -90,7 +90,7 @@ export const constantRoutes = [
     name: 'Customer',
     meta: {
       title: '客户管理',
-      icon: 'example'
+      icon: 'user'
     },
     children: [
       {
@@ -112,52 +112,74 @@ export const constantRoutes = [
     ]
   },
   {
-    path: '/documentation',
+    path: '/high-seas-customer',
     component: Layout,
+    redirect: '/high-seas-customer/list',
+    name: 'high-seas-customer',
+    meta: {
+      title: '公海客户',
+      icon: 'peoples'
+    },
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/documentation/index'),
-        name: 'Documentation',
-        meta: { title: '公海客户', icon: 'documentation', affix: true }
+        path: 'list',
+        component: () => import('@/views/high-seas-customer/list'),
+        name: 'high-seas-customer',
+        meta: { title: '公海客户列表' }
+      },
+      {
+        path: 'add',
+        component: () => import('@/views/high-seas-customer/add'),
+        name: 'high-seas-customer',
+        meta: { title: '添加公海客户' }
       }
     ]
   },
   {
-    path: '/documentation',
+    path: '/contract',
     component: Layout,
+    redirect: '/contract/list',
+    name: 'contract',
+    meta: {
+      title: '合同管理',
+      icon: 'documentation'
+    },
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/documentation/index'),
-        name: 'Documentation',
-        meta: { title: '合同管理', icon: 'documentation', affix: true }
+        path: 'list',
+        component: () => import('@/views/contract/list'),
+        name: 'contract',
+        meta: { title: '合同列表' }
+      },
+      {
+        path: 'add',
+        component: () => import('@/views/contract/add'),
+        name: 'contract',
+        meta: { title: '添加合同' }
       }
     ]
   },
   {
-    path: '/documentation',
+    path: '/documentary',
     component: Layout,
+    redirect: '/documentary/list',
+    name: 'documentary',
+    meta: {
+      title: '跟单管理',
+      icon: 'form'
+    },
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/documentation/index'),
-        name: 'Documentation',
-        meta: { title: '跟单管理', icon: 'documentation', affix: true }
-      }
-    ]
-  },
-  {
-    path: '/profile',
-    component: Layout,
-    redirect: '/profile/index',
-    hidden: true,
-    children: [
+        path: 'list',
+        component: () => import('@/views/documentary/list'),
+        name: 'documentary',
+        meta: { title: '跟单列表' }
+      },
       {
-        path: 'index',
-        component: () => import('@/views/profile/index'),
-        name: 'Profile',
-        meta: { title: '个人资料', icon: 'user', noCache: true }
+        path: 'add',
+        component: () => import('@/views/documentary/add'),
+        name: 'documentary',
+        meta: { title: '添加跟单' }
       }
     ]
   }
@@ -176,88 +198,111 @@ export const asyncRoutes = [
         path: 'index',
         component: () => import('@/views/documentation/index'),
         name: 'Documentation',
-        meta: { title: '部门设置', icon: 'documentation', affix: true }
+        meta: { title: '部门设置', icon: 'component', affix: true }
       }
     ]
   },
   {
-    path: '/documentation',
+    path: '/staff',
     component: Layout,
+    redirect: '/staff/list',
+    name: 'staff',
+    meta: {
+      title: '员工管理',
+      icon: 'staff'
+    },
     children: [
       {
-        path: 'index',
-        component: () => import('@/views/documentation/index'),
-        name: 'Documentation',
-        meta: { title: '员工管理', icon: 'documentation', affix: true }
-      }
-    ]
-  },
-  {
-    path: '/documentation',
-    component: Layout,
-    children: [
+        path: 'list',
+        component: () => import('@/views/staff/list'),
+        name: 'staff',
+        meta: { title: '员工列表' }
+      },
       {
-        path: 'index',
-        component: () => import('@/views/documentation/index'),
-        name: 'Documentation',
-        meta: { title: '权限设置', icon: 'documentation', affix: true }
-      }
-    ]
-  },
-  {
-    path: '/guide',
-    component: Layout,
-    redirect: '/guide/index',
-    children: [
-      {
-        path: 'index',
-        component: () => import('@/views/guide/index'),
-        name: 'Guide',
-        meta: { title: '系统设置', icon: 'guide', noCache: true }
+        path: 'add',
+        component: () => import('@/views/staff/add'),
+        name: 'staff',
+        meta: { title: '添加员工' }
       }
     ]
   },
   {
     path: '/permission',
     component: Layout,
-    redirect: '/permission/page',
-    alwaysShow: true, // will always show the root menu
-    name: 'Permission',
-    meta: {
-      title: 'Permission',
-      icon: 'lock',
-      roles: ['admin', 'editor'] // you can set roles in root nav
-    },
     children: [
-      {
-        path: 'page',
-        component: () => import('@/views/permission/page'),
-        name: 'PagePermission',
-        meta: {
-          title: 'Page Permission',
-          roles: ['admin'] // or you can only set roles in sub nav
-        }
-      },
-      {
-        path: 'directive',
-        component: () => import('@/views/permission/directive'),
-        name: 'DirectivePermission',
-        meta: {
-          title: 'Directive Permission'
-          // if do not set roles, means: this page does not require permission
-        }
-      },
       {
         path: 'role',
         component: () => import('@/views/permission/role'),
-        name: 'RolePermission',
-        meta: {
-          title: 'Role Permission',
-          roles: ['admin']
-        }
+        name: 'permission',
+        meta: { title: '权限设置', icon: 'lock', affix: true }
       }
     ]
   },
+  {
+    path: '/setting',
+    component: Layout,
+    redirect: '/setting/profile',
+    name: 'setting',
+    meta: {
+      title: '系统设置',
+      icon: 'setting'
+    },
+    children: [
+      {
+        path: 'profile',
+        component: () => import('@/views/profile/index'),
+        name: 'setting',
+        meta: { title: '个人资料', noCache: true }
+      },
+      {
+        path: 'setting',
+        component: () => import('@/views/profile/index'),
+        name: 'setting',
+        meta: { title: '管理设置', noCache: true }
+      }
+    ]
+  },
+  // {
+  //   path: '/permission',
+  //   component: Layout,
+  //   redirect: '/permission/page',
+  //   alwaysShow: true, // will always show the root menu
+  //   name: 'Permission',
+  //   meta: {
+  //     title: 'Permission',
+  //     icon: 'lock',
+  //     roles: ['admin', 'editor'] // you can set roles in root nav
+  //   },
+  //   children: [
+  //     {
+  //       path: 'page',
+  //       component: () => import('@/views/permission/page'),
+  //       name: 'PagePermission',
+  //       meta: {
+  //         title: 'Page Permission',
+  //         roles: ['admin'] // or you can only set roles in sub nav
+  //       }
+  //     },
+  //     {
+  //       path: 'directive',
+  //       component: () => import('@/views/permission/directive'),
+  //       name: 'DirectivePermission',
+  //       meta: {
+  //         title: 'Directive Permission'
+  //         // if do not set roles, means: this page does not require permission
+  //       }
+  //     },
+  //     {
+  //       path: 'role',
+  //       component: () => import('@/views/permission/role'),
+  //       name: 'RolePermission',
+  //       meta: {
+  //         title: 'Role Permission',
+  //         roles: ['admin']
+  //       }
+  //     }
+  //   ]
+  // },
 
   {
     path: '/icon',

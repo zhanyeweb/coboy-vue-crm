@@ -212,7 +212,7 @@ export default {
   $index-has-icon: 30px;
   // Theme:
   $color-white: white;
-  $color-grey: #9E9E9E;
+  $color-grey: #606266;
   $color-grey-light: #E0E0E0;
   $color-blue: #2196F3;
   $color-red: #F44336;
@@ -331,6 +331,7 @@ export default {
     }
     .material-label {
       color: $color-grey;
+      font-weight: 700;
     }
     .material-input-bar {
       &:before,

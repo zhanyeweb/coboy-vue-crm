@@ -24,7 +24,7 @@
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
-          <router-link to="/profile/index">
+          <router-link to="/setting/profile">
             <el-dropdown-item>个人资料</el-dropdown-item>
           </router-link>
           <router-link to="/">

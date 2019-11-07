@@ -30,80 +30,52 @@
             <div class="postInfo-container">
               <el-row>
                 <el-col :span="8">
+                  <el-form-item label-width="120px" label="跟单联系人:" class="postInfo-container-item">
+                    <el-select v-model="postForm.DocumentaryContact" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="请输入跟单联系人">
+                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item" />
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+
+                <el-col :span="8">
+                  <el-form-item label-width="120px" label="跟单方式:" class="postInfo-container-item">
+                    <el-select v-model="postForm.DocumentaryMode" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="请输入跟单方式">
+                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item" />
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+
+                <el-col :span="8">
+                  <el-form-item label-width="120px" label="跟单进度:" class="postInfo-container-item">
+                    <el-select v-model="postForm.DocumentaryProgress" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="请输入跟单进度">
+                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item" />
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </div>
+
+            <div class="postInfo-container">
+              <el-row>
+                <el-col :span="8">
+                  <el-form-item label-width="120px" label="下次联系:" class="postInfo-container-item">
+                    <el-select v-model="postForm.NextContact" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="请输入下次联系">
+                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item" />
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+
+                <el-col :span="8">
+                  <el-form-item label-width="120px" label="备注:" class="postInfo-container-item">
+                    <el-select v-model="postForm.remarks" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="请输入备注">
+                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item" />
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+
+                <el-col :span="8">
                   <el-form-item label-width="120px" label="业务员:" class="postInfo-container-item">
                     <el-select v-model="postForm.BusinessManager" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="请输入业务员">
-                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item" />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-
-                <el-col :span="8">
-                  <el-form-item label-width="120px" label="国家:" class="postInfo-container-item">
-                    <el-select v-model="postForm.country" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="请输入国家">
-                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item" />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-
-                <el-col :span="8">
-                  <el-form-item label-width="120px" label="主要联系人:" class="postInfo-container-item">
-                    <el-select v-model="postForm.PrimaryContact" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="请输入主要联系人">
-                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item" />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </div>
-
-            <div class="postInfo-container">
-              <el-row>
-                <el-col :span="8">
-                  <el-form-item label-width="120px" label="职位:" class="postInfo-container-item">
-                    <el-select v-model="postForm.position" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="请输入职位">
-                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item" />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-
-                <el-col :span="8">
-                  <el-form-item label-width="120px" label="邮箱:" class="postInfo-container-item">
-                    <el-select v-model="postForm.email" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="请输入邮箱">
-                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item" />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-
-                <el-col :span="8">
-                  <el-form-item label-width="120px" label="电话:" class="postInfo-container-item">
-                    <el-select v-model="postForm.PrimaryContact" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="请输入电话">
-                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item" />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </div>
-
-            <div class="postInfo-container">
-              <el-row>
-                <el-col :span="8">
-                  <el-form-item label-width="120px" label="展厅数量:" class="postInfo-container-item">
-                    <el-select v-model="postForm.NumberOfExhibitionHalls" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="请输入展厅数量">
-                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item" />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-
-                <el-col :span="8">
-                  <el-form-item label-width="120px" label="客户信息来源:" class="postInfo-container-item">
-                    <el-select v-model="postForm.CustomerSource" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="请输入客户信息来源">
-                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item" />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-
-                <el-col :span="8">
-                  <el-form-item label-width="120px" label="联系进度:" class="postInfo-container-item">
-                    <el-select v-model="postForm.ContactProgress" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="请输入联系进度">
                       <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item" />
                     </el-select>
                   </el-form-item>
@@ -114,26 +86,6 @@
           </el-col>
         </el-row>
 
-        <el-form-item style="margin-bottom: 40px;" label-width="100px" label="地址:">
-          <el-input v-model="postForm.address" :rows="1" type="textarea" class="article-textarea" autosize placeholder="请输入地址" />
-          <span v-show="contentShortLength" class="word-counter">{{ contentShortLength }}words</span>
-        </el-form-item>
-
-        <el-form-item style="margin-bottom: 40px;" label-width="100px" label="网站:">
-          <el-input v-model="postForm.website" :rows="1" type="textarea" class="article-textarea" autosize placeholder="请输入网站" />
-          <span v-show="contentShortLength" class="word-counter">{{ contentShortLength }}words</span>
-        </el-form-item>
-
-        <el-form-item style="margin-bottom: 40px;" label-width="100px" label="主营产品:">
-          <el-input v-model="postForm.MainProducts" :rows="1" type="textarea" class="article-textarea" autosize placeholder="请输入主营产品" />
-          <span v-show="contentShortLength" class="word-counter">{{ contentShortLength }}words</span>
-        </el-form-item>
-
-        <el-form-item style="margin-bottom: 40px;" label-width="100px" label="备注:">
-          <el-input v-model="postForm.remarks" :rows="1" type="textarea" class="article-textarea" autosize placeholder="请输入备注" />
-          <span v-show="contentShortLength" class="word-counter">{{ contentShortLength }}words</span>
-        </el-form-item>
-
       </div>
     </el-form>
   </div>
@@ -143,7 +95,7 @@
 import MDinput from '@/components/MDinput'
 import Sticky from '@/components/Sticky' // 粘性header组件
 import { validURL } from '@/utils/validate'
-import { fetchArticle } from '@/api/article'
+import { fetchDocumentary } from '@/api/documentary'
 import { searchUser } from '@/api/remote-search'
 
 const defaultForm = {
@@ -239,7 +191,7 @@ export default {
   },
   methods: {
     fetchData(id) {
-      fetchArticle(id).then(response => {
+      fetchDocumentary(id).then(response => {
         this.postForm = response.data
 
         // just for test

@@ -10,40 +10,36 @@ for (let i = 0; i < count; i++) {
     // 录入时间
     inputtime: +Mock.Random.date('T'),
     updatetime: +Mock.Random.date('T'),
-    // 业务员
-    BusinessManager: '@first',
-    // 国家
-    country: '@first',
     // 公司名称
     CorporateName: '@first',
-    // 主要联系人
-    PrimaryContact: '@first',
-    // 职位
-    position: '@first',
-    // 邮箱
-    email: '@first',
-    // 电话
-    tel: '@first',
-    // 地址
-    address: '@first',
-    // 网站
-    website: '@first',
-    // 主营产品
-    MainProducts: '@first',
-    // 展厅数量
-    NumberOfExhibitionHalls: '@first',
-    // 客户信息来源
-    CustomerSource: '@first',
+    // 联系人
+    contact: '@first',
+    // 合同编号
+    ContractNumber: '@first',
+    // 开始日期
+    StartDate: '@first',
+    // 结束日期
+    EndDate: '@first',
+    // 合同金额
+    ContractAmount: '@first',
+    // 已收款
+    MakeCollections: '@first',
+    // 欠款
+    arrears: '@first',
     // 备注
     remarks: '@first',
-    // 联系进度
-    ContactProgress: '@first'
+    // 附件
+    file: '@first',
+    // 审核
+    ToExamine: '@first',
+    // 操作员
+    operator: '@first'
   }))
 }
 
 export default [
   {
-    url: '/customer/list',
+    url: '/contract/list',
     type: 'get',
     response: config => {
       const { importance, type, title, page = 1, limit = 20, sort } = config.query
@@ -72,7 +68,7 @@ export default [
   },
 
   {
-    url: '/customer/detail',
+    url: '/contract/detail',
     type: 'get',
     response: config => {
       const { id } = config.query
@@ -88,7 +84,7 @@ export default [
   },
 
   {
-    url: '/customer/pv',
+    url: '/contract/pv',
     type: 'get',
     response: _ => {
       return {
@@ -106,7 +102,7 @@ export default [
   },
 
   {
-    url: '/customer/add',
+    url: '/contract/add',
     type: 'post',
     response: _ => {
       return {
@@ -117,7 +113,7 @@ export default [
   },
 
   {
-    url: '/customer/save',
+    url: '/contract/save',
     type: 'post',
     response: _ => {
       return {

@@ -1,13 +1,13 @@
 <template>
   <el-card style="margin-bottom:20px;">
     <div slot="header" class="clearfix">
-      <span>About me</span>
+      <span>我的信息</span>
     </div>
 
     <div class="user-profile">
       <div class="box-center">
         <pan-thumb :image="user.avatar" :height="'100px'" :width="'100px'" :hoverable="false">
-          <div>Hello</div>
+          <div>您好~</div>
           {{ user.role }}
         </pan-thumb>
       </div>
@@ -19,10 +19,10 @@
 
     <div class="user-bio">
       <div class="user-education user-bio-section">
-        <div class="user-bio-section-header"><svg-icon icon-class="education" /><span>Education</span></div>
+        <div class="user-bio-section-header"><svg-icon icon-class="education" /><span>教育情况</span></div>
         <div class="user-bio-section-body">
           <div class="text-muted">
-            JS in Computer Science from the University of Technology
+            计算机专业
           </div>
         </div>
       </div>
