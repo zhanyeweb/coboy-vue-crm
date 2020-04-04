@@ -13,6 +13,9 @@
               <el-tab-pane label="账号信息" name="account">
                 <account :user="user" />
               </el-tab-pane>
+              <el-tab-pane label="修改密码" name="password">
+                <password :user="user" />
+              </el-tab-pane>
             </el-tabs>
           </el-card>
         </el-col>
@@ -26,10 +29,11 @@
 import { mapGetters } from 'vuex'
 import UserCard from './components/UserCard'
 import Account from './components/Account'
+import Password from './components/Password'
 
 export default {
   name: 'Profile',
-  components: { UserCard, Account },
+  components: { UserCard, Account, Password },
   data() {
     return {
       user: {},
@@ -38,7 +42,9 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'name',
+      'userid',
+      'username',
+      'FullName',
       'avatar',
       'roles'
     ])
@@ -49,9 +55,11 @@ export default {
   methods: {
     getUser() {
       this.user = {
-        name: this.name,
+        userid: this.userid,
+        username: this.username,
+        FullName: this.FullName,
         role: this.roles.join(' | '),
-        email: 'admin@test.com',
+        email: '',
         avatar: this.avatar
       }
     }

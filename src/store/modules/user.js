@@ -4,27 +4,39 @@ import router, { resetRouter } from '@/router'
 
 const state = {
   token: getToken(),
-  name: '',
+  userid: null,
+  username: '',
+  FullName: '',
   avatar: '',
   introduction: '',
-  roles: []
+  roles: [],
+  permission: ''
 }
 
 const mutations = {
   SET_TOKEN: (state, token) => {
     state.token = token
   },
+  SET_USERNAME: (state, username) => {
+    state.username = username
+  },
   SET_INTRODUCTION: (state, introduction) => {
     state.introduction = introduction
   },
-  SET_NAME: (state, name) => {
-    state.name = name
+  SET_USERID: (state, userid) => {
+    state.userid = userid
+  },
+  SET_FULL_NAME: (state, FullName) => {
+    state.FullName = FullName
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar
   },
   SET_ROLES: (state, roles) => {
     state.roles = roles
+  },
+  SET_PERMISSION: (state, permission) => {
+    state.permission = permission
   }
 }
 
@@ -54,17 +66,21 @@ const actions = {
           reject('Verification failed, please Login again.')
         }
 
-        const { roles, name, avatar, introduction } = data
+        const { roles, username, FullName, avatar, introduction, userid, permission } = data
 
         // roles must be a non-empty array
         if (!roles || roles.length <= 0) {
           reject('getInfo: roles must be a non-null array!')
         }
 
+        commit('SET_USERNAME', username)
         commit('SET_ROLES', roles)
-        commit('SET_NAME', name)
+        commit('SET_FULL_NAME', FullName)
+        commit('SET_USERID', userid)
         commit('SET_AVATAR', avatar)
         commit('SET_INTRODUCTION', introduction)
+        commit('SET_PERMISSION', permission)
+
         resolve(data)
       }).catch(error => {
         reject(error)

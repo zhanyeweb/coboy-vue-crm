@@ -1,13 +1,13 @@
 <template>
-  <customer-detail :is-edit="true" />
+  <staff-detail :is-edit="true" />
 </template>
 
 <script>
-import CustomerDetail from './components/CustomerDetail'
+import StaffDetail from './components/StaffDetail'
 
 export default {
   name: 'EditForm',
-  components: { CustomerDetail }
+  components: { StaffDetail }
 }
 </script>
 

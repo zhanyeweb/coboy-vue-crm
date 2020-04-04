@@ -3,15 +3,6 @@
     <el-form ref="postForm" :model="postForm" :rules="rules" class="form-container">
 
       <sticky :z-index="10" :class-name="'sub-navbar '+postForm.status">
-        <el-button v-loading="loading" style="margin-left: 10px;" type="primary" @click="submitForm">
-          下载Excel模板
-        </el-button>
-        <el-button v-loading="loading" style="margin-left: 10px;" type="primary" @click="submitForm">
-          导入Excel数据
-        </el-button>
-        <el-button v-loading="loading" style="margin-left: 10px;" type="warning" @click="draftForm">
-          保存为草稿
-        </el-button>
         <el-button v-loading="loading" type="success" @click="submitForm">
           提交
         </el-button>
@@ -19,36 +10,34 @@
 
       <div class="createPost-main-container">
         <el-row>
-
           <el-col :span="24">
-            <el-form-item style="margin-bottom: 40px;" prop="CorporateName">
-              <MDinput v-model="postForm.CorporateName" :maxlength="100" name="CorporateName" required>
-                公司名称
-              </MDinput>
+            <div class="panel-heading">编辑内容</div>
+          </el-col>
+        </el-row>
+
+        <el-row>
+          <el-col :span="24" style="margin-top: 20px;">
+            <el-form-item v-if="!isEdit" label-width="120px" label="公司名称:" prop="customerId" class="postInfo-container-item">
+              <el-select v-model="postForm.customerId" :remote-method="getRemoteCustomerList" filterable default-first-option remote placeholder="请输入公司名称" style="width: 92%">
+                <el-option v-for="(item,index) in customerListOptions" :key="item+index" :label="item.CorporateName" :value="item.id" />
+              </el-select>
+            </el-form-item>
+            <el-form-item v-else label-width="120px" label="公司名称:" class="postInfo-container-item">
+              <el-input v-model="postForm.CorporateName" :rows="1" type="text" class="article-input" disabled autosize placeholder="公司名称" style="width: 92%" />
             </el-form-item>
 
             <div class="postInfo-container">
               <el-row>
                 <el-col :span="8">
-                  <el-form-item label-width="120px" label="跟单联系人:" class="postInfo-container-item">
-                    <el-select v-model="postForm.DocumentaryContact" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="请输入跟单联系人">
-                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item" />
-                    </el-select>
+                  <el-form-item label-width="120px" label="跟单联系人:" prop="DocumentaryContact" class="postInfo-container-item">
+                    <el-input v-model="postForm.DocumentaryContact" :rows="1" type="text" class="article-input" autosize placeholder="请输入跟单联系人" />
                   </el-form-item>
                 </el-col>
 
                 <el-col :span="8">
-                  <el-form-item label-width="120px" label="跟单方式:" class="postInfo-container-item">
-                    <el-select v-model="postForm.DocumentaryMode" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="请输入跟单方式">
-                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item" />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-
-                <el-col :span="8">
-                  <el-form-item label-width="120px" label="跟单进度:" class="postInfo-container-item">
-                    <el-select v-model="postForm.DocumentaryProgress" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="请输入跟单进度">
-                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item" />
+                  <el-form-item label-width="120px" label="跟单方式:" prop="DocumentaryMode" class="postInfo-container-item">
+                    <el-select v-model="postForm.DocumentaryMode" filterable default-first-option placeholder="请选择跟单方式">
+                      <el-option v-for="(item,index) in documentaryModeListOptions" :key="item+index" :label="item.label" :value="item.value" />
                     </el-select>
                   </el-form-item>
                 </el-col>
@@ -58,26 +47,28 @@
             <div class="postInfo-container">
               <el-row>
                 <el-col :span="8">
-                  <el-form-item label-width="120px" label="下次联系:" class="postInfo-container-item">
-                    <el-select v-model="postForm.NextContact" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="请输入下次联系">
-                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item" />
+                  <el-form-item label-width="120px" label="跟单进度:" prop="DocumentaryProgress" class="postInfo-container-item">
+                    <el-select v-model="postForm.DocumentaryProgress" filterable default-first-option placeholder="请输入跟单进度">
+                      <el-option v-for="(item,index) in DocumentaryProgress" :key="item+index" :label="item.label" :value="item.value" />
                     </el-select>
                   </el-form-item>
                 </el-col>
-
                 <el-col :span="8">
-                  <el-form-item label-width="120px" label="备注:" class="postInfo-container-item">
-                    <el-select v-model="postForm.remarks" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="请输入备注">
-                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item" />
-                    </el-select>
+                  <el-form-item label-width="120px" label="下次联系:" prop="NextContact" class="postInfo-container-item">
+                    <el-date-picker
+                      v-model="postForm.NextContact"
+                      type="datetime"
+                      placeholder="选择日期时间">
+                    </el-date-picker>
                   </el-form-item>
                 </el-col>
-
-                <el-col :span="8">
-                  <el-form-item label-width="120px" label="业务员:" class="postInfo-container-item">
-                    <el-select v-model="postForm.BusinessManager" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="请输入业务员">
-                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item" />
-                    </el-select>
+              </el-row>
+            </div>
+            <div class="postInfo-container">
+              <el-row>
+                <el-col :span="23">
+                  <el-form-item label-width="120px" label="备注:" >
+                    <el-input v-model="postForm.remarks" :rows="4" type="textarea" class="article-textarea" placeholder="请输入备注" />
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -92,24 +83,31 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import MDinput from '@/components/MDinput'
 import Sticky from '@/components/Sticky' // 粘性header组件
 import { validURL } from '@/utils/validate'
-import { fetchDocumentary } from '@/api/documentary'
-import { searchUser } from '@/api/remote-search'
+import { fetchDocumentary, saveDocumentary } from '@/api/documentary'
+import { searchCustomer } from '@/api/remote-search';
+import { generateUUID } from '@/utils';
 
 const defaultForm = {
   status: 'draft',
-  title: '', // 文章题目
-  content: '', // 文章内容
-  content_short: '', // 文章摘要
-  source_uri: '', // 文章外链
-  image_uri: '', // 文章图片
-  display_time: undefined, // 前台展示时间
-  id: undefined,
-  platforms: ['a-platform'],
-  comment_disabled: false,
-  importance: 0
+  uuid: generateUUID(),
+  userid: null,
+  customerId: null, 
+  DocumentaryContact: null, 
+  DocumentaryMode: null, 
+  DocumentaryProgress: null, 
+  NextContact: null, 
+  remarks: undefined,
+}
+const formLabel = {
+  customerId: '公司名称',
+  DocumentaryContact: '跟单联系人',
+  DocumentaryMode: '跟单方式',
+  DocumentaryProgress: '跟单进度',
+  NextContact: '下次联系',
 }
 
 export default {
@@ -123,12 +121,12 @@ export default {
   },
   data() {
     const validateRequire = (rule, value, callback) => {
-      if (value === '') {
+      if (value === '' || value === null) {
         this.$message({
-          message: rule.field + '为必传项',
+          message: formLabel[rule.field] + '为必传项',
           type: 'error'
         })
-        callback(new Error(rule.field + '为必传项'))
+        callback(new Error(formLabel[rule.field] + '为必传项'))
       } else {
         callback()
       }
@@ -151,53 +149,69 @@ export default {
     return {
       postForm: Object.assign({}, defaultForm),
       loading: false,
-      userListOptions: [],
+      customerListOptions: [],
       rules: {
-        image_uri: [{ validator: validateRequire }],
-        title: [{ validator: validateRequire }],
-        content: [{ validator: validateRequire }],
-        source_uri: [{ validator: validateSourceUri, trigger: 'blur' }]
+        customerId: [{ validator: validateRequire }],
+        DocumentaryContact: [{ validator: validateRequire }],
+        DocumentaryMode: [{ validator: validateRequire }],
+        DocumentaryProgress: [{ validator: validateRequire }],
+        NextContact: [{ validator: validateRequire }],
       },
-      tempRoute: {}
+      tempRoute: {},
+      documentaryModeListOptions: [{
+          value: '1',
+          label: '电话沟通'
+        }, {
+          value: '2',
+          label: '上门拜访'
+        },
+        {
+          value: '3',
+          label: '微信QQ沟通'
+        }
+      ],
+      DocumentaryProgress: [
+        {          
+          value: '1',
+          label: '结束跟单'
+        },
+        {          
+          value: '2',
+          label: '初次沟通'
+        },
+        {          
+          value: '3',
+          label: '有意向'
+        },
+        {          
+          value: '4',
+          label: '考虑中'
+        }
+      ]
     }
   },
   computed: {
-    contentShortLength() {
-      return this.postForm.content_short.length
-    },
-    displayTime: {
-      // set and get is useful when the data
-      // returned by the back end api is different from the front end
-      // back end return => "2013-06-25 06:59:25"
-      // front end need timestamp => 1372114765000
-      get() {
-        return (+new Date(this.postForm.display_time))
-      },
-      set(val) {
-        this.postForm.display_time = new Date(val)
-      }
-    }
+    ...mapGetters([
+      'name',
+      'userid'
+    ])
   },
   created() {
     if (this.isEdit) {
-      const id = this.$route.params && this.$route.params.id
-      this.fetchData(id)
+      const uuid = this.$route.params && this.$route.params.uuid
+      this.fetchData(uuid)
     }
 
-    // Why need to make a copy of this.$route here?
-    // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
-    // https://github.com/PanJiaChen/vue-element-admin/issues/1221
-    this.tempRoute = Object.assign({}, this.$route)
+    this.getUser();
   },
   methods: {
-    fetchData(id) {
-      fetchDocumentary(id).then(response => {
+    getUser() {
+      this.postForm.userid = this.userid;
+    },
+    fetchData(uuid) {
+      fetchDocumentary(uuid).then(response => {
         this.postForm = response.data
-
-        // just for test
-        this.postForm.title += `   Article Id:${this.postForm.id}`
-        this.postForm.content_short += `   Article Id:${this.postForm.id}`
-
+        this.postForm.NextContact = this.postForm.NextContact * 1000;
         // set tagsview title
         this.setTagsViewTitle()
 
@@ -217,18 +231,24 @@ export default {
       document.title = `${title} - ${this.postForm.id}`
     },
     submitForm() {
-      console.log(this.postForm)
+      console.log(this.postForm);
+      this.postForm.NextContact = new Date(this.postForm.NextContact).getTime()/1000;
       this.$refs.postForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$notify({
-            title: '成功',
-            message: '发布文章成功',
-            type: 'success',
-            duration: 2000
-          })
-          this.postForm.status = 'published'
-          this.loading = false
+          saveDocumentary(this.postForm).then(response => {
+            this.$notify({
+              title: '成功',
+              message: '操作成功',
+              type: 'success',
+              duration: 2000
+            });
+            this.loading = false;
+          }).catch(err => {
+            this.loading = false;
+            console.log(err);
+          });
+          this.postForm.status = 'published';
         } else {
           console.log('error submit!!')
           return false
@@ -251,12 +271,12 @@ export default {
       })
       this.postForm.status = 'draft'
     },
-    getRemoteUserList(query) {
-      searchUser(query).then(response => {
-        if (!response.data.items) return
-        this.userListOptions = response.data.items.map(v => v.name)
+    getRemoteCustomerList(query) {
+      searchCustomer(query).then(response => {
+        if (!response.data.items) return;
+        this.customerListOptions = response.data.items;
       })
-    }
+    },
   }
 }
 </script>
@@ -268,8 +288,24 @@ export default {
   position: relative;
 
   .createPost-main-container {
-    padding: 40px 45px 20px 50px;
-
+    margin: 40px 45px 20px 50px;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+    border: 1px solid #ebeef5;
+    -webkit-transition: .3s;
+    transition: .3s;
+    border-radius: 4px;
+    .panel-heading{
+      padding: 18px 20px;
+      border-bottom: 1px solid #ebeef5;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      background: none;
+      color: #333;
+      border-color: #ddd;
+      border-top-left-radius: 3px;
+      border-top-right-radius: 3px;
+      font-weight: bold;
+    }
     .postInfo-container {
       position: relative;
       @include clearfix;
@@ -294,8 +330,8 @@ export default {
     padding-right: 40px;
     resize: none;
     border: none;
-    border-radius: 0px;
-    border-bottom: 1px solid #bfcbd9;
+    border-radius: 5px;
+    border: 1px solid #bfcbd9;
   }
 }
 </style>

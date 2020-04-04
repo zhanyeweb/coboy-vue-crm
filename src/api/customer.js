@@ -1,40 +1,72 @@
 import request from '@/utils/request'
 
-export function fetchList(query) {
+export function fetchCustomerList(query) {
   return request({
-    url: '/customer/list',
+    url: '/index.php?m=api&c=customer&f=listCustomer',
     method: 'get',
     params: query
   })
 }
 
-export function fetchCustomer(id) {
+export function fetchListHighSeasCustomer(query) {
   return request({
-    url: '/customer/detail',
+    url: '/index.php?m=api&c=customer&f=listHighSeasCustomer',
+    method: 'get',
+    params: query
+  })
+}
+
+export function fetchCustomer(uuid) {
+  return request({
+    url: '/index.php?m=api&c=customer&f=detail',
+    method: 'get',
+    params: { uuid }
+  })
+}
+
+export function del(id) {
+  return request({
+    url: '/index.php?m=api&c=customer&f=delete',
     method: 'get',
     params: { id }
   })
 }
 
-export function fetchPv(pv) {
+export function protect(data) {
   return request({
-    url: '/customer/pv',
-    method: 'get',
-    params: { pv }
-  })
-}
-
-export function saveCustomer(data) {
-  return request({
-    url: '/customer/save',
+    url: '/index.php?m=api&c=customer&f=protect',
     method: 'post',
     data
   })
 }
 
-export function updateArticle(data) {
+export function saveCustomer(data) {
   return request({
-    url: '/article/update',
+    url: '/index.php?m=api&c=customer&f=saveCustomer',
+    method: 'post',
+    data
+  })
+}
+
+export function followUpOrderId(customerId) {
+  return request({
+    url: '/index.php?m=api&c=customer&f=followUpOrderId',
+    method: 'get',
+    params: { customerId }
+  })
+}
+
+export function saveFollowUpOrderId(data) {
+  return request({
+    url: '/index.php?m=api&c=customer&f=saveFollowUpOrderId',
+    method: 'post',
+    data
+  })
+}
+
+export function uploadExcel(data) {
+  return request({
+    url: '/index.php?m=api&c=customer&f=uploadExcel',
     method: 'post',
     data
   })

@@ -12,12 +12,12 @@
         </pan-thumb>
       </div>
       <div class="box-center">
-        <div class="user-name text-center">{{ user.name }}</div>
+        <div class="user-name text-center">{{ user.FullName }}</div>
         <div class="user-role text-center text-muted">{{ user.role | uppercaseFirst }}</div>
       </div>
     </div>
 
-    <div class="user-bio">
+    <div class="user-bio" style="display:none;">
       <div class="user-education user-bio-section">
         <div class="user-bio-section-header"><svg-icon icon-class="education" /><span>教育情况</span></div>
         <div class="user-bio-section-body">
@@ -27,7 +27,7 @@
         </div>
       </div>
 
-      <div class="user-skills user-bio-section">
+      <div class="user-skills user-bio-section" style="display:none;">
         <div class="user-bio-section-header"><svg-icon icon-class="skill" /><span>Skills</span></div>
         <div class="user-bio-section-body">
           <div class="progress-item">

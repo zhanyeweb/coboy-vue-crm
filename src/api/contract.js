@@ -1,18 +1,18 @@
 import request from '@/utils/request'
 
-export function fetchList(query) {
+export function fetchContractList(query) {
   return request({
-    url: '/contract/list',
+    url: '/index.php?m=api&c=contract&f=listContract',
     method: 'get',
     params: query
   })
 }
 
-export function fetchDetail(id) {
+export function fetchContract(uuid) {
   return request({
-    url: '/contract/detail',
+    url: '/index.php?m=api&c=contract&f=detail',
     method: 'get',
-    params: { id }
+    params: { uuid }
   })
 }
 
@@ -26,15 +26,15 @@ export function fetchPv(pv) {
 
 export function saveContract(data) {
   return request({
-    url: '/contract/save',
+    url: '/index.php?m=api&c=contract&f=saveContract',
     method: 'post',
     data
   })
 }
 
-export function updateArticle(data) {
+export function uploadEnclosures(data) {
   return request({
-    url: '/contract/update',
+    url: '/index.php?m=api&c=contract&f=uploadEnclosures',
     method: 'post',
     data
   })

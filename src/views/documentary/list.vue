@@ -9,7 +9,7 @@
 
       <el-table-column min-width="300px" label="公司名称" fixed="left">
         <template slot-scope="{row}">
-          <router-link :to="'/customer/edit/'+row.id" class="link-type">
+          <router-link :to="'/documentary/edit/'+row.uuid" class="link-type">
             <span>{{ row.CorporateName }}</span>
           </router-link>
         </template>
@@ -23,43 +23,37 @@
 
       <el-table-column width="120px" align="center" label="跟单方式">
         <template slot-scope="scope">
-          <span>{{ scope.row.DocumentaryMode }}</span>
+          <span>{{ formatterDocumentaryMode(scope.row.DocumentaryMode) }}</span>
         </template>
       </el-table-column>
 
       <el-table-column width="100px" label="跟单进度">
         <template slot-scope="scope">
-          <span>{{ scope.row.DocumentaryProgress }}</span>
+          <span>{{ formatterDocumentaryProgress(scope.row.DocumentaryProgress) }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="下次联系" width="110">
+      <el-table-column label="下次联系" width="180">
         <template slot-scope="{row}">
-          <span>{{ row.NextContact }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="备注" width="110">
-        <template slot-scope="scope">
-          <span>{{ scope.row.remarks }}</span>
+          <span><i class="el-icon-time"></i> {{ row.NextContact | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
 
       <el-table-column label="业务员" width="110">
         <template slot-scope="scope">
-          <span>{{ scope.row.BusinessManager }}</span>
+          <span>{{ scope.row.FullName }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="录入时间" width="110">
+      <el-table-column label="录入时间" width="180">
         <template slot-scope="scope">
-          <span>{{ scope.row.inputtime }}</span>
+          <span><i class="el-icon-time"></i> {{ scope.row.inputtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="操作" width="120" fixed="right">
         <template slot-scope="scope">
-          <router-link :to="'/customer/edit/'+scope.row.id">
+          <router-link :to="'/documentary/edit/'+scope.row.uuid">
             <el-button type="primary" size="small" icon="el-icon-edit">
               编辑
             </el-button>
@@ -68,12 +62,12 @@
       </el-table-column>
     </el-table>
 
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.rows" @pagination="getList" />
   </div>
 </template>
 
 <script>
-import { fetchList } from '@/api/documentary'
+import { fetchDocumentaryList } from '@/api/documentary'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 export default {
@@ -96,7 +90,7 @@ export default {
       listLoading: true,
       listQuery: {
         page: 1,
-        limit: 10
+        rows: 20
       }
     }
   },
@@ -106,12 +100,40 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      fetchList(this.listQuery).then(response => {
-        this.list = response.data.items
-        this.total = response.data.total
-        this.listLoading = false
-        console.log('list', this.list)
+      fetchDocumentaryList(this.listQuery).then(response => {
+        this.list = response.data.items;
+        this.total = response.data.total;
+        this.listLoading = false;
       })
+    },
+    formatterDocumentaryMode(key){
+      switch(Number(key)){
+        case 1:{
+          return '电话沟通';
+        }
+        case 2:{
+          return '上门拜访';
+        }
+        case 3:{
+          return '微信QQ沟通';
+        }
+      }
+    },
+    formatterDocumentaryProgress(key){
+      switch(Number(key)){
+        case 1:{
+          return '结束跟单';
+        }
+        case 2:{
+          return '初次沟通';
+        }
+        case 3:{
+          return '有意向';
+        }
+        case 4:{
+          return '考虑中';
+        }
+      }
     }
   }
 }

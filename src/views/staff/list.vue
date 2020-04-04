@@ -3,105 +3,63 @@
     <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
       <el-table-column align="center" label="编号" width="80" fixed="left">
         <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
+          <span>{{ scope.row.userid }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column min-width="300px" label="公司名称" fixed="left">
+      <el-table-column min-width="300px" label="登录账号" fixed="left">
         <template slot-scope="{row}">
-          <router-link :to="'/customer/edit/'+row.id" class="link-type">
-            <span>{{ row.CorporateName }}</span>
+          <router-link :to="'/staff/edit/'+row.uuid" class="link-type">
+            <span>{{ row.username }}</span>
           </router-link>
         </template>
       </el-table-column>
 
       <el-table-column width="180px" align="center" label="录入时间">
         <template slot-scope="scope">
-          <span>{{ scope.row.inputtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+          <span>{{ scope.row.creat_time | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column width="120px" align="center" label="业务员">
+      <el-table-column width="120px" align="center" label="姓名">
         <template slot-scope="scope">
-          <span>{{ scope.row.BusinessManager }}</span>
+          <span>{{ scope.row.FullName }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column width="100px" label="国家">
-        <template slot-scope="scope">
-          <span>{{ scope.row.country }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="主要联系人" width="110">
+      <el-table-column label="角色/职位" width="110">
         <template slot-scope="{row}">
-          <span>{{ row.PrimaryContact }}</span>
+          <span>{{ row.rolesName }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="职位" width="110">
+      <el-table-column label="手机号码" width="110">
         <template slot-scope="scope">
-          <span>{{ scope.row.position }}</span>
+          <span>{{ scope.row.mobile }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="邮箱" width="110">
+      <el-table-column label="Email" width="110">
         <template slot-scope="scope">
           <span>{{ scope.row.email }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="电话" width="110">
+      <el-table-column label="籍贯" width="110">
         <template slot-scope="scope">
-          <span>{{ scope.row.tel }}</span>
+          <span>{{ scope.row.NativePlace }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="地址" width="110">
+      <el-table-column label="状态" width="110">
         <template slot-scope="scope">
-          <span>{{ scope.row.address }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="网站" width="110">
-        <template slot-scope="scope">
-          <span>{{ scope.row.website }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="主营产品" width="110">
-        <template slot-scope="scope">
-          <span>{{ scope.row.MainProducts }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="展厅数量" width="110">
-        <template slot-scope="scope">
-          <span>{{ scope.row.NumberOfExhibitionHalls }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="客户信息来源" width="110">
-        <template slot-scope="scope">
-          <span>{{ scope.row.CustomerSource }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="备注" width="110">
-        <template slot-scope="scope">
-          <span>{{ scope.row.remarks }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="联系进度" width="110">
-        <template slot-scope="scope">
-          <span>{{ scope.row.ContactProgress }}</span>
+          <span>{{ scope.row.is_lock }}</span>
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="操作" width="120" fixed="right">
         <template slot-scope="scope">
-          <router-link :to="'/customer/edit/'+scope.row.id">
+          <router-link :to="'/staff/edit/'+scope.row.uuid">
             <el-button type="primary" size="small" icon="el-icon-edit">
               编辑
             </el-button>
@@ -110,16 +68,16 @@
       </el-table-column>
     </el-table>
 
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.rows" @pagination="getList" />
   </div>
 </template>
 
 <script>
-import { fetchList } from '@/api/customer'
+import { fetchList } from '@/api/staff'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 export default {
-  name: 'CustomerList',
+  name: 'StaffList',
   components: { Pagination },
   filters: {
     statusFilter(status) {
@@ -137,8 +95,8 @@ export default {
       total: 0,
       listLoading: true,
       listQuery: {
-        page: 1,
-        limit: 10
+        page: 0,
+        rows: 10
       }
     }
   },
@@ -147,7 +105,8 @@ export default {
   },
   methods: {
     getList() {
-      this.listLoading = true
+      this.listLoading = true;
+      console.log('this.listQuery', this.listQuery);
       fetchList(this.listQuery).then(response => {
         this.list = response.data.items
         this.total = response.data.total

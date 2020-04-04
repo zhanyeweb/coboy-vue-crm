@@ -1,13 +1,13 @@
 <template>
-  <customer-detail :is-edit="false" />
+  <staff-detail :is-edit="false" />
 </template>
 
 <script>
-import CustomerDetail from './components/CustomerDetail'
+import StaffDetail from './components/StaffDetail'
 
 export default {
   name: 'AddCustomer',
-  components: { CustomerDetail }
+  components: { StaffDetail }
 }
 </script>
 

@@ -1,11 +1,12 @@
 module.exports = {
   title: 'CRM客户管理系统',
+  baseUrl: 'http://crm.zhanyeweb.com/crm/api/',
 
   /**
    * @type {boolean} true | false
    * @description Whether show the settings right-panel
    */
-  showSettings: true,
+  showSettings: false,
 
   /**
    * @type {boolean} true | false

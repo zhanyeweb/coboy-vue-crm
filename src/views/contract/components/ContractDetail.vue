@@ -3,15 +3,6 @@
     <el-form ref="postForm" :model="postForm" :rules="rules" class="form-container">
 
       <sticky :z-index="10" :class-name="'sub-navbar '+postForm.status">
-        <el-button v-loading="loading" style="margin-left: 10px;" type="primary" @click="submitForm">
-          下载Excel模板
-        </el-button>
-        <el-button v-loading="loading" style="margin-left: 10px;" type="primary" @click="submitForm">
-          导入Excel数据
-        </el-button>
-        <el-button v-loading="loading" style="margin-left: 10px;" type="warning" @click="draftForm">
-          保存为草稿
-        </el-button>
         <el-button v-loading="loading" type="success" @click="submitForm">
           提交
         </el-button>
@@ -19,37 +10,34 @@
 
       <div class="createPost-main-container">
         <el-row>
-
           <el-col :span="24">
-            <el-form-item style="margin-bottom: 40px;" prop="CorporateName">
-              <MDinput v-model="postForm.CorporateName" :maxlength="100" name="CorporateName" required>
-                公司名称
-              </MDinput>
-            </el-form-item>
+            <div class="panel-heading">编辑内容</div>
+          </el-col>
+        </el-row>
 
+
+            <div class="postInfo-container" style="margin-top: 20px;">
+              <el-col :span="23">
+                <el-form-item v-if="!isEdit" label-width="120px" label="公司名称:" prop="customerId" >
+                  <el-select v-model="postForm.customerId" :remote-method="getRemoteCustomerList" filterable default-first-option remote placeholder="请输入公司名称" style="width: 100%;" >
+                    <el-option v-for="(item,index) in customerListOptions" :key="item+index" :label="item.CorporateName" :value="item.id" />
+                  </el-select>
+                </el-form-item>
+                <el-form-item v-else label-width="120px" label="公司名称:" >
+                  <el-input v-model="postForm.CorporateName" :rows="1" type="text" class="article-input" disabled autosize placeholder="公司名称" style="width: 100%;" />
+                </el-form-item>
+              </el-col>
+            </div>
             <div class="postInfo-container">
               <el-row>
                 <el-col :span="8">
-                  <el-form-item label-width="120px" label="联系人:" class="postInfo-container-item">
-                    <el-select v-model="postForm.contact" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="请输入联系人">
-                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item" />
-                    </el-select>
+                  <el-form-item label-width="120px" label="合同编号:" prop="ContractNumber" class="postInfo-container-item">
+                    <el-input v-model="postForm.ContractNumber" :rows="1" type="text" class="article-input" autosize placeholder="请输入合同编号" />
                   </el-form-item>
                 </el-col>
-
                 <el-col :span="8">
-                  <el-form-item label-width="120px" label="合同编号:" class="postInfo-container-item">
-                    <el-select v-model="postForm.ContractNumber" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="请输入合同编号">
-                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item" />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-
-                <el-col :span="8">
-                  <el-form-item label-width="120px" label="开始日期:" class="postInfo-container-item">
-                    <el-select v-model="postForm.StartDate" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="请输入开始日期">
-                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item" />
-                    </el-select>
+                  <el-form-item label-width="120px" label="联系人:" prop="contact" class="postInfo-container-item">
+                    <el-input v-model="postForm.contact" :rows="1" type="text" class="article-input" autosize placeholder="请输入联系人" />
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -58,26 +46,24 @@
             <div class="postInfo-container">
               <el-row>
                 <el-col :span="8">
-                  <el-form-item label-width="120px" label="结束日期:" class="postInfo-container-item">
-                    <el-select v-model="postForm.EndDate" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="请输入结束日期">
-                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item" />
-                    </el-select>
+                  <el-form-item label-width="120px" label="开始日期:" prop="StartDate" class="postInfo-container-item">
+                    <el-date-picker
+                      v-model="postForm.StartDate"
+                      type="date"
+                      value-format="timestamp"
+                      placeholder="选择日期">
+                    </el-date-picker>
                   </el-form-item>
                 </el-col>
 
                 <el-col :span="8">
-                  <el-form-item label-width="120px" label="合同金额:" class="postInfo-container-item">
-                    <el-select v-model="postForm.ContractAmount" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="请输入合同金额">
-                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item" />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-
-                <el-col :span="8">
-                  <el-form-item label-width="120px" label="已收款:" class="postInfo-container-item">
-                    <el-select v-model="postForm.MakeCollections" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="请输入已收款">
-                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item" />
-                    </el-select>
+                  <el-form-item label-width="120px" label="结束日期:" prop="EndDate" class="postInfo-container-item">
+                    <el-date-picker
+                      v-model="postForm.EndDate"
+                      type="date"
+                      value-format="timestamp"
+                      placeholder="选择日期">
+                    </el-date-picker>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -85,27 +71,20 @@
 
             <div class="postInfo-container">
               <el-row>
+                <el-col :span="8">
+                  <el-form-item label-width="120px" label="合同总金额:" prop="ContractAmount" class="postInfo-container-item">
+                    <el-input-number v-model="postForm.ContractAmount" :precision="2" :step="1" :max="999999999" placeholder="请输入合同总金额"></el-input-number>
+                  </el-form-item>
+                </el-col>
+
+                <el-col :span="8">
+                  <el-form-item label-width="120px" label="已收款:" prop="receivables" class="postInfo-container-item">
+                    <el-input-number v-model="postForm.receivables" :precision="2" :step="1" :max="999999999" placeholder="请输入已收款"></el-input-number>
+                  </el-form-item>
+                </el-col>
                 <el-col :span="8">
                   <el-form-item label-width="120px" label="欠款:" class="postInfo-container-item">
-                    <el-select v-model="postForm.arrears" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="请输入欠款">
-                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item" />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-
-                <el-col :span="8">
-                  <el-form-item label-width="120px" label="备注:" class="postInfo-container-item">
-                    <el-select v-model="postForm.remarks" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="请输入备注">
-                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item" />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-
-                <el-col :span="8">
-                  <el-form-item label-width="120px" label="附件:" class="postInfo-container-item">
-                    <el-select v-model="postForm.file" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="请输入附件">
-                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item" />
-                    </el-select>
+                    <el-input-number v-model="postForm.arrears" :precision="2" :step="1" :max="999999999" placeholder="请输入欠款"></el-input-number>
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -115,55 +94,126 @@
               <el-row>
                 <el-col :span="8">
                   <el-form-item label-width="120px" label="审核:" class="postInfo-container-item">
-                    <el-select v-model="postForm.ToExamine" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="请输入审核">
-                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item" />
-                    </el-select>
+                    <el-input v-model="postForm.ToExamine" :rows="1" type="text" class="article-input" autosize placeholder="请输入审核" />
                   </el-form-item>
                 </el-col>
 
                 <el-col :span="8">
                   <el-form-item label-width="120px" label="操作员:" class="postInfo-container-item">
-                    <el-select v-model="postForm.operator" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="请输入操作员">
-                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item" />
-                    </el-select>
-                  </el-form-item>
-                </el-col>
-
-                <el-col :span="8">
-                  <el-form-item label-width="120px" label="操作员:" class="postInfo-container-item">
-                    <el-select v-model="postForm.operator" :remote-method="getRemoteUserList" filterable default-first-option remote placeholder="请输入操作员">
-                      <el-option v-for="(item,index) in userListOptions" :key="item+index" :label="item" :value="item" />
-                    </el-select>
+                    <el-input v-model="postForm.operator" :rows="1" type="text" class="article-input" autosize placeholder="请输入操作员" />
                   </el-form-item>
                 </el-col>
               </el-row>
             </div>
-          </el-col>
-        </el-row>
+            <div class="postInfo-container">
+              <el-row>
+                <el-col :span="23">
+                  <el-form-item label-width="120px" label="备注:" >
+                    <el-input v-model="postForm.remarks" :rows="4" type="textarea" class="article-textarea" placeholder="请输入备注" />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </div>
+            <div class="postInfo-container">
+              <el-row>
+                <el-col :span="24">
+                  <el-form-item label-width="120px" label="附件:" >
+                    <el-upload
+                      class="upload-enclosures"
+                      action=""
+                      :show-file-list=false
+                      :limit="5"
+                      :http-request="uploadEnclosures">
+                      <el-button size="small" type="primary">点击上传</el-button>
+                      <div slot="tip" class="el-upload__tip">只能上传jpg,png,rar,doc,docx,xls,xlsx文件，且不超过2M，单次不能上传超过5个文件。</div>
+                    </el-upload>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </div>
+              <el-row>
+                <el-col :span="23">
+                  <el-form-item label-width="120px" label="" >
+                    <el-table :data="postForm.enclosures" type="index" border fit highlight-current-row style="width: 100%">
+                      <el-table-column align="center" label="描述" fixed="left">
+                        <template slot-scope="scope">
+                          <span>{{ scope.row.fileName }}</span>
+                        </template>
+                      </el-table-column>
+                      <el-table-column align="center" label="大小" width="100" fixed="left">
+                        <template slot-scope="scope">
+                          <span>{{ (scope.row.size/1024).toFixed(2) }} k</span>
+                        </template>
+                      </el-table-column>
+                      <el-table-column align="center" label="类型" width="100" fixed="left">
+                        <template slot-scope="scope">
+                          <span>{{ scope.row.file_extension }}</span>
+                        </template>
+                      </el-table-column>
+                      <el-table-column align="center" label="上传时间" width="150" fixed="left">
+                        <template slot-scope="scope">
+                          <span>{{ scope.row.inputtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+                        </template>
+                      </el-table-column>
+                      <el-table-column align="center" label="下载" width="100" fixed="left">
+                        <template slot-scope="scope">
+                          <i class="el-icon-download" @click="downFile(scope.row.file,scope.row.fileName)" style="cursor:pointer;"/>
+                        </template>
+                      </el-table-column>
+                      <el-table-column align="center" label="操作" width="100" fixed="right">
+                        <template slot-scope="scope">
+                            <el-button type="danger" size="small" icon="el-icon-delete" @click="delEnclosures(scope.$index)">
+                              删除
+                            </el-button>
+                        </template>
+                      </el-table-column>
+                    </el-table>
+                  </el-form-item>
+                </el-col>
+              </el-row>
       </div>
     </el-form>
   </div>
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import MDinput from '@/components/MDinput'
 import Sticky from '@/components/Sticky' // 粘性header组件
 import { validURL } from '@/utils/validate'
-import { fetchArticle } from '@/api/article'
-import { searchUser } from '@/api/remote-search'
+import { fetchContract, saveContract, uploadEnclosures } from '@/api/contract'
+import { searchCustomer } from '@/api/remote-search'
+import { generateUUID } from '@/utils';
 
 const defaultForm = {
   status: 'draft',
-  title: '', // 文章题目
-  content: '', // 文章内容
-  content_short: '', // 文章摘要
-  source_uri: '', // 文章外链
-  image_uri: '', // 文章图片
-  display_time: undefined, // 前台展示时间
-  id: undefined,
-  platforms: ['a-platform'],
-  comment_disabled: false,
-  importance: 0
+  userid: null,
+  uuid: null,
+  customerId: null,
+  contact: null,
+  ContractNumber: null,
+  StartDate: null,
+  EndDate: null,
+  ContractAmount: undefined,
+  receivables: undefined,
+  arrears: undefined,
+  ToExamine: null,
+  operator: null,
+  remarks: null,
+  enclosures: [],
+}
+const formLabel = {
+  customerId: '公司名称',
+  contact: '联系人',
+  ContractNumber: '合同编号',
+  StartDate: '开始日期',
+  EndDate: '结束日期',
+  ContractAmount: '合同总金额',
+  receivables: '已收款',
+  arrears: '欠款',
+  ToExamine: '审核',
+  operator: '操作员',
+  remarks: '备注'
 }
 
 export default {
@@ -177,12 +227,12 @@ export default {
   },
   data() {
     const validateRequire = (rule, value, callback) => {
-      if (value === '') {
+      if (value === '' || value === null || value === undefined) {
         this.$message({
-          message: rule.field + '为必传项',
+          message: formLabel[rule.field] + '为必传项',
           type: 'error'
         })
-        callback(new Error(rule.field + '为必传项'))
+        callback(new Error(formLabel[rule.field] + '为必传项'))
       } else {
         callback()
       }
@@ -205,53 +255,43 @@ export default {
     return {
       postForm: Object.assign({}, defaultForm),
       loading: false,
-      userListOptions: [],
+      customerListOptions: [],
       rules: {
-        image_uri: [{ validator: validateRequire }],
-        title: [{ validator: validateRequire }],
-        content: [{ validator: validateRequire }],
-        source_uri: [{ validator: validateSourceUri, trigger: 'blur' }]
+        customerId: [{ validator: validateRequire }],
+        ContractNumber: [{ validator: validateRequire }],
+        StartDate: [{ validator: validateRequire }],
+        EndDate: [{ validator: validateRequire }],
+        ContractAmount: [{ validator: validateRequire }],
+        receivables: [{ validator: validateRequire }]
       },
       tempRoute: {}
     }
   },
   computed: {
-    contentShortLength() {
-      return this.postForm.content_short.length
-    },
-    displayTime: {
-      // set and get is useful when the data
-      // returned by the back end api is different from the front end
-      // back end return => "2013-06-25 06:59:25"
-      // front end need timestamp => 1372114765000
-      get() {
-        return (+new Date(this.postForm.display_time))
-      },
-      set(val) {
-        this.postForm.display_time = new Date(val)
-      }
-    }
+    ...mapGetters([
+      'name',
+      'userid'
+    ])
   },
   created() {
     if (this.isEdit) {
-      const id = this.$route.params && this.$route.params.id
-      this.fetchData(id)
+      const uuid = this.$route.params && this.$route.params.uuid
+      this.fetchData(uuid)
     }
-
-    // Why need to make a copy of this.$route here?
-    // Because if you enter this page and quickly switch tag, may be in the execution of the setTagsViewTitle function, this.$route is no longer pointing to the current page
-    // https://github.com/PanJiaChen/vue-element-admin/issues/1221
-    this.tempRoute = Object.assign({}, this.$route)
+    this.postForm.uuid = generateUUID();
+    this.getUser();
   },
   methods: {
-    fetchData(id) {
-      fetchArticle(id).then(response => {
-        this.postForm = response.data
-
-        // just for test
-        this.postForm.title += `   Article Id:${this.postForm.id}`
-        this.postForm.content_short += `   Article Id:${this.postForm.id}`
-
+    getUser() {
+      this.postForm.userid = this.userid;
+    },
+    fetchData(uuid) {
+      fetchContract(uuid).then(response => {
+        this.postForm = response.data;
+        this.postForm.StartDate = this.postForm.StartDate * 1000;
+        this.postForm.EndDate = this.postForm.EndDate * 1000;
+        this.postForm.ContractAmount = this.postForm.ContractAmount/100;
+        this.postForm.receivables = this.postForm.receivables/100;
         // set tagsview title
         this.setTagsViewTitle()
 
@@ -262,27 +302,35 @@ export default {
       })
     },
     setTagsViewTitle() {
-      const title = 'Edit Article'
-      const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.id}` })
+      const title = '编辑合同'
+      const route = Object.assign({}, this.tempRoute, { title: `${title}-${this.postForm.CorporateName}` })
       this.$store.dispatch('tagsView/updateVisitedView', route)
     },
     setPageTitle() {
-      const title = 'Edit Article'
-      document.title = `${title} - ${this.postForm.id}`
+      const title = '编辑合同'
+      document.title = `${title} - ${this.postForm.CorporateName}`
     },
     submitForm() {
+      this.postForm.EndDate = new Date(this.postForm.EndDate).getTime()/1000;
+      this.postForm.StartDate = new Date(this.postForm.StartDate).getTime()/1000;
       console.log(this.postForm)
       this.$refs.postForm.validate(valid => {
         if (valid) {
           this.loading = true
-          this.$notify({
-            title: '成功',
-            message: '发布文章成功',
-            type: 'success',
-            duration: 2000
-          })
-          this.postForm.status = 'published'
-          this.loading = false
+          saveContract(this.postForm).then(response => {
+            this.$refs.postForm.uuid = generateUUID();
+            this.$refs.postForm.resetFields();
+            this.$notify({
+              title: '成功',
+              message: '操作成功',
+              type: 'success',
+              duration: 2000
+            });
+            this.loading = false;
+          }).catch(err => {
+            this.loading = false;
+            console.log(err);
+          });
         } else {
           console.log('error submit!!')
           return false
@@ -305,11 +353,59 @@ export default {
       })
       this.postForm.status = 'draft'
     },
-    getRemoteUserList(query) {
-      searchUser(query).then(response => {
-        if (!response.data.items) return
-        this.userListOptions = response.data.items.map(v => v.name)
+    getRemoteCustomerList(query) {
+      searchCustomer(query).then(response => {
+        if (!response.data.items) return;
+        this.customerListOptions = response.data.items;
       })
+    },
+    delEnclosures(index){
+        this.$confirm('此操作将删除该文件, 是否继续?', '提示', {
+          confirmButtonText: '确定',
+          cancelButtonText: '取消',
+          type: 'warning'
+        }).then(() => {
+          this.postForm.enclosures.splice(index,1);
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+        }).catch(() => {
+          this.$message({
+            type: 'info',
+            message: '已取消删除'
+          });          
+        });
+    },
+    uploadEnclosures(item){
+      const fileObj = item.file;
+      // FormData 对象
+      const form = new FormData();
+      form.append('FILE_UPLOAD', fileObj);
+      uploadEnclosures(form).then(response => {
+            this.postForm.enclosures.unshift(response.data);
+            console.log('response',response);
+            this.$notify({
+              title: '成功',
+              message: '操作成功',
+              type: 'success',
+              duration: 2000
+            });
+          }).catch(err => {
+            console.log(err);
+      });
+    },
+    downFile(url, filename) {console.log('filename',filename);
+        // 创建隐藏的可下载链接
+        const eleLink = document.createElement('a');
+        eleLink.download = filename;
+        eleLink.style.display = 'none';
+        eleLink.href = url;
+        // 触发点击
+        document.body.appendChild(eleLink);
+        eleLink.click();
+        // 然后移除
+        document.body.removeChild(eleLink);
     }
   }
 }
@@ -322,8 +418,24 @@ export default {
   position: relative;
 
   .createPost-main-container {
-    padding: 40px 45px 20px 50px;
-
+    margin: 40px 45px 20px 50px;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+    border: 1px solid #ebeef5;
+    -webkit-transition: .3s;
+    transition: .3s;
+    border-radius: 4px;
+    .panel-heading{
+      padding: 18px 20px;
+      border-bottom: 1px solid #ebeef5;
+      -webkit-box-sizing: border-box;
+      box-sizing: border-box;
+      background: none;
+      color: #333;
+      border-color: #ddd;
+      border-top-left-radius: 3px;
+      border-top-right-radius: 3px;
+      font-weight: bold;
+    }
     .postInfo-container {
       position: relative;
       @include clearfix;
@@ -348,8 +460,8 @@ export default {
     padding-right: 40px;
     resize: none;
     border: none;
-    border-radius: 0px;
-    border-bottom: 1px solid #bfcbd9;
+    border-radius: 5px;
+    border: 1px solid #bfcbd9;
   }
 }
 </style>

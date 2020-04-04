@@ -41,32 +41,107 @@ export const constantRoutes = [
         path: 'dashboard',
         component: 'views/dashboard/index',
         name: 'Dashboard',
-        meta: { title: 'Dashboard', icon: 'dashboard', affix: true }
+        meta: { title: '首页概况', icon: 'dashboard', affix: true }
       }
     ]
   },
   {
-    path: '/documentation',
+    path: '/customer',
     component: 'layout/Layout',
+    redirect: '/customer/list',
+    name: 'Customer',
+    meta: {
+      title: '客户管理',
+      icon: 'user'
+    },
     children: [
       {
-        path: 'index',
-        component: 'views/documentation/index',
-        name: 'Documentation',
-        meta: { title: 'Documentation', icon: 'documentation', affix: true }
+        path: 'list',
+        component: 'views/customer/list',
+        name: '客户列表',
+        meta: {
+          title: '客户列表'
+        }
+      },
+      {
+        path: 'add',
+        component: 'views/customer/add',
+        name: '添加客户',
+        meta: {
+          title: '添加客户'
+        }
       }
     ]
   },
   {
-    path: '/guide',
+    path: '/high-seas-customer',
     component: 'layout/Layout',
-    redirect: '/guide/index',
+    redirect: '/high-seas-customer/list',
+    name: 'high-seas-customer',
+    meta: {
+      title: '公海客户',
+      icon: 'peoples'
+    },
     children: [
       {
-        path: 'index',
-        component: 'views/guide/index',
-        name: 'Guide',
-        meta: { title: 'Guide', icon: 'guide', noCache: true }
+        path: 'list',
+        component: 'views/high-seas-customer/list',
+        name: 'high-seas-customer',
+        meta: { title: '公海客户列表' }
+      },
+      {
+        path: 'add',
+        component: 'views/high-seas-customer/add',
+        name: 'high-seas-customer',
+        meta: { title: '添加公海客户' }
+      }
+    ]
+  },
+  {
+    path: '/contract',
+    component: 'layout/Layout',
+    redirect: '/contract/list',
+    name: 'contract',
+    meta: {
+      title: '合同管理',
+      icon: 'documentation'
+    },
+    children: [
+      {
+        path: 'list',
+        component: 'views/contract/list',
+        name: 'contract',
+        meta: { title: '合同列表' }
+      },
+      {
+        path: 'add',
+        component: 'views/contract/add',
+        name: 'contract',
+        meta: { title: '添加合同' }
+      }
+    ]
+  },
+  {
+    path: '/documentary',
+    component: 'layout/Layout',
+    redirect: '/documentary/list',
+    name: 'documentary',
+    meta: {
+      title: '跟单管理',
+      icon: 'form'
+    },
+    children: [
+      {
+        path: 'list',
+        component: 'views/documentary/list',
+        name: 'documentary',
+        meta: { title: '跟单列表' }
+      },
+      {
+        path: 'add',
+        component: 'views/documentary/add',
+        name: 'documentary',
+        meta: { title: '添加跟单' }
       }
     ]
   }
@@ -74,12 +149,84 @@ export const constantRoutes = [
 
 export const asyncRoutes = [
   {
+    path: '/department',
+    component: 'layout/Layout',
+    children: [
+      {
+        path: 'index',
+        component: 'views/department/index',
+        name: 'Department',
+        meta: { title: '部门设置', icon: 'component', affix: true }
+      }
+    ]
+  },
+  {
+    path: '/staff',
+    component: 'layout/Layout',
+    redirect: '/staff/list',
+    name: 'staff',
+    meta: {
+      title: '员工管理',
+      icon: 'staff'
+    },
+    children: [
+      {
+        path: 'list',
+        component: 'views/staff/list',
+        name: 'staff',
+        meta: { title: '员工列表' }
+      },
+      {
+        path: 'add',
+        component: 'views/staff/add',
+        name: 'staff',
+        meta: { title: '添加员工' }
+      }
+    ]
+  },
+  {
+    path: '/permission',
+    component: 'layout/Layout',
+    children: [
+      {
+        path: 'role',
+        component: 'views/permission/role',
+        name: 'permission',
+        meta: { title: '权限设置', icon: 'lock', affix: true }
+      }
+    ]
+  },
+  {
+    path: '/setting',
+    component: 'layout/Layout',
+    redirect: '/setting/profile',
+    name: 'setting',
+    meta: {
+      title: '系统设置',
+      icon: 'setting'
+    },
+    children: [
+      {
+        path: 'profile',
+        component: 'views/profile/index',
+        name: 'setting',
+        meta: { title: '个人资料', noCache: true }
+      },
+      {
+        path: 'setting',
+        component: 'views/profile/index',
+        name: 'setting',
+        meta: { title: '管理设置', noCache: true }
+      }
+    ]
+  },
+  {
     path: '/permission',
     component: 'layout/Layout',
     redirect: '/permission/index',
     alwaysShow: true,
     meta: {
-      title: 'Permission',
+      title: '权限',
       icon: 'lock',
       roles: ['admin', 'editor']
     },
@@ -89,7 +236,7 @@ export const asyncRoutes = [
         component: 'views/permission/page',
         name: 'PagePermission',
         meta: {
-          title: 'Page Permission',
+          title: '页面权限',
           roles: ['admin']
         }
       },
@@ -98,7 +245,7 @@ export const asyncRoutes = [
         component: 'views/permission/directive',
         name: 'DirectivePermission',
         meta: {
-          title: 'Directive Permission'
+          title: '权限指令'
         }
       },
       {
@@ -106,7 +253,7 @@ export const asyncRoutes = [
         component: 'views/permission/role',
         name: 'RolePermission',
         meta: {
-          title: 'Role Permission',
+          title: '角色权限',
           roles: ['admin']
         }
       }

@@ -3,9 +3,9 @@
     <el-button type="primary" @click="handleAddRole">新建角色</el-button>
 
     <el-table :data="rolesList" style="width: 100%;margin-top:30px;" border>
-      <el-table-column align="center" label="角色 Key" width="220">
+      <el-table-column align="center" label="角色 ID" width="220">
         <template slot-scope="scope">
-          {{ scope.row.key }}
+          {{ scope.row.id }}
         </template>
       </el-table-column>
       <el-table-column align="center" label="角色名称" width="220">
@@ -63,9 +63,10 @@
 import path from 'path'
 import { deepClone } from '@/utils'
 import { getRoutes, getRoles, addRole, deleteRole, updateRole } from '@/api/role'
+import { generateUUID } from '@/utils';
 
 const defaultRole = {
-  key: '',
+  uuid: generateUUID(),
   name: '',
   description: '',
   routes: []
@@ -175,7 +176,7 @@ export default {
         type: 'warning'
       })
         .then(async() => {
-          await deleteRole(row.key)
+          await deleteRole(row.id)
           this.rolesList.splice($index, 1)
           this.$message({
             type: 'success',
@@ -206,28 +207,28 @@ export default {
 
       const checkedKeys = this.$refs.tree.getCheckedKeys()
       this.role.routes = this.generateTree(deepClone(this.serviceRoutes), '/', checkedKeys)
-
+      console.log('this.role', this.role);
       if (isEdit) {
-        await updateRole(this.role.key, this.role)
+        await updateRole(this.role.id, this.role)
         for (let index = 0; index < this.rolesList.length; index++) {
-          if (this.rolesList[index].key === this.role.key) {
+          if (this.rolesList[index].id === this.role.id) {
             this.rolesList.splice(index, 1, Object.assign({}, this.role))
             break
           }
         }
       } else {
         const { data } = await addRole(this.role)
-        this.role.key = data.key
+        this.role.id = data.id
         this.rolesList.push(this.role)
       }
 
-      const { description, key, name } = this.role
+      const { description, id, name } = this.role
       this.dialogVisible = false
       this.$notify({
         title: '操作成功',
         dangerouslyUseHTMLString: true,
         message: `
-            <div>角色 Key: ${key}</div>
+            <div>角色 ID: ${id}</div>
             <div>角色名称: ${name}</div>
             <div>角色说明: ${description}</div>
           `,

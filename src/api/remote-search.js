@@ -1,10 +1,10 @@
 import request from '@/utils/request'
 
-export function searchUser(name) {
+export function searchCustomer(searchCustomerName) {
   return request({
-    url: '/search/user',
+    url: '/index.php?m=api&c=customer&f=searchCustomer',
     method: 'get',
-    params: { name }
+    params: { searchCustomerName }
   })
 }
 

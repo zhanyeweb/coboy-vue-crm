@@ -9,7 +9,7 @@
 
       <el-table-column min-width="300px" label="公司名称" fixed="left">
         <template slot-scope="{row}">
-          <router-link :to="'/customer/edit/'+row.id" class="link-type">
+          <router-link :to="'/contract/edit/'+row.uuid" class="link-type">
             <span>{{ row.CorporateName }}</span>
           </router-link>
         </template>
@@ -29,13 +29,13 @@
 
       <el-table-column width="180px" align="center" label="开始日期">
         <template slot-scope="scope">
-          <span>{{ scope.row.StartDate | parseTime('{y}-{m}-{d}') }}</span>
+          <span><i class="el-icon-time"></i> {{ scope.row.StartDate | parseTime('{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
 
       <el-table-column width="180px" align="center" label="结束日期">
         <template slot-scope="scope">
-          <span>{{ scope.row.EndDate | parseTime('{y}-{m}-{d}') }}</span>
+          <span><i class="el-icon-time"></i> {{ scope.row.EndDate | parseTime('{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
 
@@ -47,13 +47,13 @@
 
       <el-table-column width="120px" align="center" label="已收款">
         <template slot-scope="scope">
-          <span>{{ scope.row.MakeCollections }}</span>
+          <span>{{ scope.row.receivables }}</span>
         </template>
       </el-table-column>
 
       <el-table-column width="120px" align="center" label="欠款">
         <template slot-scope="scope">
-          <span>{{ scope.row.arrears }}</span>
+          <span>{{ (scope.row.ContractAmount-scope.row.receivables).toFixed(2) }}</span>
         </template>
       </el-table-column>
 
@@ -63,15 +63,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column width="100px" label="附件">
-        <template slot-scope="scope">
-          <span>{{ scope.row.file }}</span>
-        </template>
-      </el-table-column>
-
       <el-table-column width="180px" align="center" label="录入时间">
         <template slot-scope="scope">
-          <span>{{ scope.row.inputtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+          <span><i class="el-icon-time"></i> {{ scope.row.inputtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
 
@@ -83,7 +77,7 @@
 
       <el-table-column align="center" label="操作" width="120" fixed="right">
         <template slot-scope="scope">
-          <router-link :to="'/customer/edit/'+scope.row.id">
+          <router-link :to="'/contract/edit/'+scope.row.uuid">
             <el-button type="primary" size="small" icon="el-icon-edit">
               编辑
             </el-button>
@@ -92,12 +86,12 @@
       </el-table-column>
     </el-table>
 
-    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.limit" @pagination="getList" />
+    <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.rows" @pagination="getList" />
   </div>
 </template>
 
 <script>
-import { fetchList } from '@/api/contract'
+import { fetchContractList } from '@/api/contract'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 export default {
@@ -120,7 +114,7 @@ export default {
       listLoading: true,
       listQuery: {
         page: 1,
-        limit: 10
+        rows: 20
       }
     }
   },
@@ -130,7 +124,7 @@ export default {
   methods: {
     getList() {
       this.listLoading = true
-      fetchList(this.listQuery).then(response => {
+      fetchContractList(this.listQuery).then(response => {
         this.list = response.data.items
         this.total = response.data.total
         this.listLoading = false

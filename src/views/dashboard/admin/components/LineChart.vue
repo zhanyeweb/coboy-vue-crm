@@ -29,6 +29,18 @@ export default {
     chartData: {
       type: Object,
       required: true
+    },
+    dateData:{
+      type: Array,
+      required: true
+    },
+    contractAmountChartData:{
+      type: Array,
+      required: true
+    },
+    receivablesChartData:{
+      type: Array,
+      required: true
     }
   },
   data() {
@@ -61,10 +73,10 @@ export default {
       this.chart = echarts.init(this.$el, 'macarons')
       this.setOptions(this.chartData)
     },
-    setOptions({ expectedData, actualData } = {}) {
+    setOptions({ contractAmountChartData, receivablesChartData } = {}) {
       this.chart.setOption({
         xAxis: {
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: this.dateData,
           boundaryGap: false,
           axisTick: {
             show: false
@@ -90,10 +102,10 @@ export default {
           }
         },
         legend: {
-          data: ['客户统计', '跟单统计']
+          data: ['应收款金额', '已收款金额']
         },
         series: [{
-          name: '客户统计', itemStyle: {
+          name: '应收款金额', itemStyle: {
             normal: {
               color: '#FF005A',
               lineStyle: {
@@ -104,12 +116,12 @@ export default {
           },
           smooth: true,
           type: 'line',
-          data: expectedData,
+          data: contractAmountChartData,
           animationDuration: 2800,
           animationEasing: 'cubicInOut'
         },
         {
-          name: '跟单统计',
+          name: '已收款金额',
           smooth: true,
           type: 'line',
           itemStyle: {
@@ -124,7 +136,7 @@ export default {
               }
             }
           },
-          data: actualData,
+          data: receivablesChartData,
           animationDuration: 2800,
           animationEasing: 'quadraticOut'
         }]

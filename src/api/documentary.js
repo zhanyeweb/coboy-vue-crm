@@ -1,18 +1,34 @@
 import request from '@/utils/request'
 
-export function fetchList(query) {
+export function fetchCustomerList(query) {
   return request({
-    url: '/documentary/list',
+    url: '/index.php?m=api&c=documentary&f=listCustomer',
     method: 'get',
     params: query
   })
 }
 
-export function fetchDetail(id) {
+export function fetchDocumentaryList(query) {
   return request({
-    url: '/documentary/detail',
+    url: '/index.php?m=api&c=documentary&f=listDocumentary',
     method: 'get',
-    params: { id }
+    params: query
+  })
+}
+
+export function fetchListByCustomerDocumentary(query) {
+  return request({
+    url: '/index.php?m=api&c=documentary&f=listByCustomerDocumentary',
+    method: 'get',
+    params: query
+  })
+}
+
+export function fetchDocumentary(uuid) {
+  return request({
+    url: '/index.php?m=api&c=documentary&f=detail',
+    method: 'get',
+    params: { uuid }
   })
 }
 
@@ -26,7 +42,7 @@ export function fetchPv(pv) {
 
 export function saveDocumentary(data) {
   return request({
-    url: '/documentary/save',
+    url: '/index.php?m=api&c=documentary&f=saveDocumentary',
     method: 'post',
     data
   })
@@ -37,5 +53,13 @@ export function updateDocumentary(data) {
     url: '/documentary/update',
     method: 'post',
     data
+  })
+}
+
+export function deleteDocumentary(uuid) {
+  return request({
+    url: '/index.php?m=api&c=documentary&f=deleteDocumentary',
+    method: 'get',
+    params: { uuid }
   })
 }
