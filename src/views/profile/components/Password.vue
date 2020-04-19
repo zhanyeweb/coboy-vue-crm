@@ -1,10 +1,10 @@
 <template>
   <el-form :model="postForm">
     <el-form-item label="密码">
-      <el-input v-model.trim="postForm.password" type="password"/>
+      <el-input v-model.trim="postForm.password" type="password" />
     </el-form-item>
     <el-form-item label="确认密码">
-      <el-input v-model.trim="postForm.notPassword" type="password"/>
+      <el-input v-model.trim="postForm.notPassword" type="password" />
     </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="submit">修改</el-button>
@@ -27,9 +27,9 @@ export default {
       }
     }
   },
-  data(){
-    return{
-      postForm: Object.assign({}, this.user),
+  data() {
+    return {
+      postForm: Object.assign({}, this.user)
     }
   },
   created() {
@@ -48,7 +48,7 @@ export default {
     },
     submit() {
       this.loading = true
-      if(!this.postForm.password){
+      if (!this.postForm.password) {
         this.$message({
           message: '密码不能为空',
           type: 'error',
@@ -56,7 +56,7 @@ export default {
         });
         return;
       }
-      if(this.postForm.password!==this.postForm.notPassword){
+      if (this.postForm.password !== this.postForm.notPassword) {
         this.$message({
           message: '密码和确认密码不相等',
           type: 'error',

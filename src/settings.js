@@ -1,6 +1,6 @@
 module.exports = {
   title: 'CRM客户管理系统',
-  baseUrl: 'http://crm.zhanyeweb.com/crm/api/',
+  baseUrl: 'http://www.fstoeshin.com/crm/api/',
 
   /**
    * @type {boolean} true | false

@@ -9,12 +9,11 @@
         <el-upload
           class="uploadExcel"
           action=""
-          :show-file-list=false
-          :limit="1"
+          :show-file-list="false"
           :http-request="uploadExcel"
           accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-          >
-          <el-button v-loading="loading" style="margin-left: 10px;" type="primary" >
+        >
+          <el-button v-loading="loading" style="margin-left: 10px;" type="primary">
             导入Excel数据
           </el-button>
         </el-upload>
@@ -58,13 +57,27 @@
         <div class="postInfo-container" style="margin-bottom: 20px;">
           <el-row>
             <el-col :span="8">
-              <el-form-item label-width="120px" label="国家:" class="postInfo-container-item">
-                <el-input v-model="postForm.country" :rows="1" type="text" class="article-input" autosize placeholder="请输入国家" />
+              <el-form-item label-width="120px" label="邮箱:" class="postInfo-container-item">
+                <el-input v-model="postForm.email" :rows="1" type="text" class="article-input" autosize placeholder="请输入邮箱" />
               </el-form-item>
             </el-col>
             <el-col :span="8">
-              <el-form-item label-width="120px" label="邮箱:" class="postInfo-container-item">
-                <el-input v-model="postForm.email" :rows="1" type="text" class="article-input" autosize placeholder="请输入邮箱" />
+              <el-form-item label-width="120px" label="Whatsapp:" class="postInfo-container-item" prop="whatsapp">
+                <el-input v-model="postForm.whatsapp" :rows="1" type="text" class="article-input" autosize placeholder="请输入Whatsapp" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label-width="120px" label="LinkedIn:" class="postInfo-container-item" prop="linkedin">
+                <el-input v-model="postForm.linkedin" :rows="1" type="text" class="article-input" autosize placeholder="请输入LinkedIn" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </div>
+        <div class="postInfo-container" style="margin-bottom: 20px;">
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label-width="120px" label="国家:" class="postInfo-container-item">
+                <el-input v-model="postForm.country" :rows="1" type="text" class="article-input" autosize placeholder="请输入国家" />
               </el-form-item>
             </el-col>
             <el-col :span="8">
@@ -89,11 +102,11 @@
           <el-input v-model="postForm.address" :rows="1" type="text" class="article-input" autosize placeholder="请输入地址" />
         </el-form-item>
 
-        <el-form-item style="margin-bottom: 20px;" label-width="100px" label="网站:" >
+        <el-form-item style="margin-bottom: 20px;" label-width="100px" label="网站:">
           <el-input v-model="postForm.website" :rows="1" type="text" class="article-input" autosize placeholder="请输入网站" />
         </el-form-item>
 
-        <el-form-item style="margin-bottom: 20px;" label-width="100px" label="主营产品:" >
+        <el-form-item style="margin-bottom: 20px;" label-width="100px" label="主营产品:">
           <el-input v-model="postForm.MainProducts" :rows="1" type="text" class="article-input" autosize placeholder="请输入主营产品" />
         </el-form-item>
         <el-col :span="23">
@@ -121,7 +134,7 @@ import { getRoles } from '@/api/role';
 import { generateUUID } from '@/utils';
 
 const defaultForm = {
-  uuid: generateUUID(),
+  uuid: null,
   userid: null,
   type: 1, // 客户类型：1，公海客户，2，我的客户，3，保护期客户
   CorporateName: null,
@@ -136,7 +149,9 @@ const defaultForm = {
   address: null,
   website: null,
   MainProducts: null,
-  remarks: null
+  remarks: null,
+  whatsapp: null,
+  linkedin: null,
 }
 const formLabel = {
   CorporateName: '公司名称',
@@ -151,7 +166,9 @@ const formLabel = {
   address: '地址',
   website: '网站',
   MainProducts: '主营产品',
-  remarks: '备注'
+  remarks: '备注',
+  whatsapp: 'Whatsapp',
+  linkedin: 'LinkedIn',
 }
 
 export default {
@@ -165,13 +182,13 @@ export default {
   },
   data() {
     const validateRequire = (rule, value, callback) => {
-      console.log('value',value);
+      console.log('value', value);
       if (value === '' || value === null) {
         this.$message({
           message: formLabel[rule.field] + '为必传项',
           type: 'error'
         })
-        callback(new Error(formLabel[rule.field]  + '为必传项'))
+        callback(new Error(formLabel[rule.field] + '为必传项'))
       } else {
         callback()
       }
@@ -198,8 +215,6 @@ export default {
       rules: {
         CorporateName: [{ validator: validateRequire }],
         PrimaryContact: [{ validator: validateRequire }],
-        position: [{ validator: validateRequire }],
-        tel: [{ validator: validateRequire }],
       },
       tempRoute: {},
       departData: [],
@@ -216,13 +231,15 @@ export default {
       'userid'
     ]),
     ...mapState({
-      baseUrl: state => state.settings.baseUrl,
-    }),
+      baseUrl: state => state.settings.baseUrl
+    })
   },
   created() {
     if (this.isEdit) {
       const uuid = this.$route.params && this.$route.params.uuid;
       this.fetchData(uuid);
+    }else{
+      this.postForm.uuid = generateUUID();
     }
     this.getUser();
   },
@@ -260,6 +277,7 @@ export default {
               duration: 2000
             });
             this.loading = false;
+            this.$router.push({ path: '/high-seas-customer/edit/' + this.postForm.uuid });
           }).catch(err => {
             this.loading = false;
             console.log(err);
@@ -292,37 +310,63 @@ export default {
         this.userListOptions = response.data.items.map(v => v.name)
       })
     },
-    uploadExcel(item){
+    uploadExcel(item) {
+      this.loading = true;
       const fileObj = item.file;
       // FormData 对象
       const form = new FormData();
       form.append('FILE_UPLOAD', fileObj);
       form.append('type', 1);
       uploadExcel(form).then(response => {
-            this.$notify({
-              title: '成功',
-              message: '操作成功',
-              type: 'success',
-              duration: 2000
-            });
-            this.loading = false;
-            this.$router.push({path:'/high-seas-customer/mylist'})
-          }).catch(err => {
-            this.loading = false;
-            console.log(err);
+        if(response.data){
+          const { importCount, notImportInfo } = response.data;
+          let html = '';
+          notImportInfo.map((o, i) => {
+            html += '<p>'+(i + 1)+'. '+ o +'</p>';
+          });
+          const _this = this;
+          const messageTxt = notImportInfo.length > 0 ? 
+          '<h5>导入条数：' + importCount + '</h5><h5>存在重复相似数据：</h5>' + html 
+           : '导入成功';
+          this.$notify({
+            title: '系统提示：',
+            dangerouslyUseHTMLString: true,
+            message: messageTxt,
+            type: 'success',
+            duration: 0,
+            onClose: function() {
+              if(importCount === 0){
+                _this.$router.push({ path: '/high-seas-customer/add' });
+              }else{
+                _this.$router.push({ path: '/high-seas-customer/mylist' });
+              }
+            }
+          });
+          this.loading = false;
+        }else{
+          this.loading = false;
+          this.$notify.error({
+            title: '系统提示：',
+            message: response.message,
+            duration: 3000,
+          });
+        }
+      }).catch(err => {
+        this.loading = false;
+        console.log(err);
       });
     },
     downFile(url, filename) {
-        // 创建隐藏的可下载链接
-        const eleLink = document.createElement('a');
-        eleLink.download = filename;
-        eleLink.style.display = 'none';
-        eleLink.href = url;
-        // 触发点击
-        document.body.appendChild(eleLink);
-        eleLink.click();
-        // 然后移除
-        document.body.removeChild(eleLink);
+      // 创建隐藏的可下载链接
+      const eleLink = document.createElement('a');
+      eleLink.download = filename;
+      eleLink.style.display = 'none';
+      eleLink.href = url;
+      // 触发点击
+      document.body.appendChild(eleLink);
+      eleLink.click();
+      // 然后移除
+      document.body.removeChild(eleLink);
     }
   }
 }

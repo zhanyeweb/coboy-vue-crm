@@ -1,7 +1,7 @@
 import { saveProductCate, delProductCate } from '@/api/productCate'
 const state = {
   treeData: [
-    { uuid: '01', puuid: '0', name: '技术部', isAdding: false, isEdit: false, isVisible: true, disabled: true },
+    { uuid: '01', puuid: '0', name: '技术部', isAdding: false, isEdit: false, isVisible: true, disabled: true }
   ],
   isRepeatName: false
 }
@@ -30,10 +30,10 @@ const actions = {
 const mutations = {
   INIT_TREE_ITEM: (state, items) => {
     console.log('items', items);
-    const insertData = {isAdding: false, isEdit: false, isVisible: true, disabled: true};
-    let tempData = [];
+    const insertData = { isAdding: false, isEdit: false, isVisible: true, disabled: true };
+    const tempData = [];
     items && items.map((v) => {
-      tempData.push({...v, ...insertData});
+      tempData.push({ ...v, ...insertData });
     });
     state.treeData = tempData;
     console.log('itemsstate.treeData', state.treeData);
@@ -76,7 +76,7 @@ const mutations = {
     state.treeData = list;
     console.log('state.treeDataDEL', state.treeData);
     return new Promise((resolve, reject) => {
-      delProductCate({uuid: delTreeTtem.uuid}).then(response => {
+      delProductCate({ uuid: delTreeTtem.uuid }).then(response => {
         resolve()
       }).catch(error => {
         reject(error)

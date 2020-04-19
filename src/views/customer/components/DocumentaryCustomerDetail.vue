@@ -12,7 +12,7 @@
         <el-row>
           <el-col :span="24" style="margin-top: 20px;">
             <el-form-item label-width="120px" label="公司名称:" class="postInfo-container-item">
-              {{CorporateName}}
+              {{ CorporateName }}
             </el-form-item>
             <div class="postInfo-container">
               <el-row>
@@ -46,8 +46,8 @@
                     <el-date-picker
                       v-model="postForm.NextContact"
                       type="datetime"
-                      placeholder="选择日期时间">
-                    </el-date-picker>
+                      placeholder="选择日期时间"
+                    />
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -55,7 +55,7 @@
             <div class="postInfo-container">
               <el-row>
                 <el-col :span="23">
-                  <el-form-item label-width="120px" label="备注:" >
+                  <el-form-item label-width="120px" label="备注:">
                     <el-input v-model="postForm.remarks" :rows="4" type="textarea" class="article-textarea" placeholder="请输入备注" />
                   </el-form-item>
                 </el-col>
@@ -63,7 +63,7 @@
               <el-row>
                 <el-col :span="21">   .
                 </el-col>
-                <el-col :span="3">        
+                <el-col :span="3">
                   <el-button v-loading="loading" type="success" @click="submitForm">
                     提交
                   </el-button>
@@ -76,29 +76,98 @@
 
         <div class="record">
           <div class="salesRecord">跟单记录</div>
-
-          <div class="recordDetail" v-for="(item,index) in listDocumentary" :key="index">
-            <span class="avatar" style="height: 45px; width: 45px; line-height: 45px;">{{item.FullName.slice(0,1)}}</span>
+          <template v-if="loadingList">
+            <div style="text-align:center;">正在加载...</div>
+          </template>
+          <template v-else>
+          <div v-for="(item,index) in listDocumentary" :key="index" class="recordDetail">
+            <span class="avatar" style="height: 45px; width: 45px; line-height: 45px;">{{ item.FullName.slice(0,1) }}</span>
             <div style="margin-left: 60px; margin-top: -11px;">
-              <span style="display: block; margin: 10px 0px; font-size: 14px; font-weight: bold; color: rgb(51, 51, 51);">{{item.FullName}}</span>
-              <el-dropdown class="more" trigger="click" @command="() => deleteDocumentary(item.uuid)">
+              <span style="display: block; margin: 10px 0px; font-size: 14px; font-weight: bold; color: rgb(51, 51, 51);">{{ item.FullName }}</span>
+              <el-dropdown class="more" trigger="click" @command="(e) => handleCommand(e, item)">
                 <span class="el-dropdown-link">
-                  <i class="el-icon-arrow-down el-icon--right"></i>
+                  <i class="el-icon-arrow-down el-icon--right" />
                 </span>
                 <el-dropdown-menu slot="dropdown">
-                  <el-dropdown-item icon="el-icon-delete" >删除</el-dropdown-item>
+                  <el-dropdown-item command="edit" icon="el-icon-edit">编辑</el-dropdown-item>
+                  <el-dropdown-item command="del" icon="el-icon-delete">删除</el-dropdown-item>
                 </el-dropdown-menu>
               </el-dropdown>
-              <div style="color: #909399;"><span style="font-size: 12px;">{{item.inputtime | parseTime('{y}-{m}-{d} {h}:{i}')}} 通过 <span class="prominent">{{formatterDocumentaryMode(item.DocumentaryMode)}}</span> 与 <span class="prominent">{{item.CorporateName}}</span> 的 <span class="prominent">{{item.DocumentaryContact}}</span> 进行了沟通</span></div>
-              <pre class="convention" style="white-space: pre-wrap;">{{item.remarks}}</pre>
-              <div style="font-size: 12px;color: #909399;"><i class="el-icon-view"></i> <span style="margin: 0px 5px;">目前进度：{{formatterDocumentaryProgress(item.DocumentaryProgress)}}</span> &nbsp; <i class="el-icon-time"></i><span style="margin: 0px 5px;">下次联系时间：{{item.NextContact | parseTime('{y}-{m}-{d} {h}:{i}')}}</span></div>
+              <div style="color: #909399;"><span style="font-size: 12px;">{{ item.inputtime | parseTime('{y}-{m}-{d} {h}:{i}') }} 通过 <span class="prominent">{{ formatterDocumentaryMode(item.DocumentaryMode) }}</span> 与 <span class="prominent">{{ item.CorporateName }}</span> 的 <span class="prominent">{{ item.DocumentaryContact }}</span> 进行了沟通</span></div>
+              <pre class="convention" style="white-space: pre-wrap;">{{ item.remarks }}</pre>
+              <div style="font-size: 12px;color: #909399;"><i class="el-icon-view" /> <span style="margin: 0px 5px;">目前进度：{{ formatterDocumentaryProgress(item.DocumentaryProgress) }}</span> &nbsp; <i class="el-icon-time" /><span style="margin: 0px 5px;">下次联系时间：{{ item.NextContact | parseTime('{y}-{m}-{d} {h}:{i}') }}</span></div>
             </div>
           </div>
-          <div style="text-align:center;"><pagination v-show="listDocumentaryTotal>0" :total="listDocumentaryTotal" :page.sync="listQuery.page" :limit.sync="listQuery.rows" @pagination="fetchListByCustomerDocumentary" :layout="'prev, pager, next'" :background="false" /></div>
+          </template>
+          <div style="text-align:center;"><pagination v-show="listDocumentaryTotal>0" :total="listDocumentaryTotal" :page.sync="listQuery.page" :limit.sync="listQuery.rows" :layout="'prev, pager, next'" :background="false" @pagination="fetchListByCustomerDocumentary" /></div>
         </div>
       </div>
     </el-form>
-    
+    <el-dialog width="1000px" :visible.sync="dialogVisible" :title="'修改跟单信息'">
+      <el-form>
+        <el-row>
+          <el-col :span="24" style="margin-top: 20px;">
+            <div class="postInfo-container">
+              <el-row>
+                <el-col :span="8">
+                  <el-form-item label-width="120px" label="跟单联系人:" prop="DocumentaryContact" class="postInfo-container-item">
+                    <el-input v-model="postForm.DocumentaryContact" :rows="1" type="text" class="article-input" autosize placeholder="请输入跟单联系人" />
+                  </el-form-item>
+                </el-col>
+
+                <el-col :span="8">
+                  <el-form-item label-width="120px" label="跟单方式:" prop="DocumentaryMode" class="postInfo-container-item">
+                    <el-select v-model="postForm.DocumentaryMode" filterable default-first-option placeholder="请选择跟单方式">
+                      <el-option v-for="(item,index) in documentaryModeListOptions" :key="item+index" :label="item.label" :value="item.value" />
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </div>
+
+            <div class="postInfo-container">
+              <el-row>
+                <el-col :span="8">
+                  <el-form-item label-width="120px" label="跟单进度:" prop="DocumentaryProgress" class="postInfo-container-item">
+                    <el-select v-model="postForm.DocumentaryProgress" filterable default-first-option placeholder="请输入跟单进度">
+                      <el-option v-for="(item,index) in DocumentaryProgress" :key="item+index" :label="item.label" :value="item.value" />
+                    </el-select>
+                  </el-form-item>
+                </el-col>
+                <el-col :span="8">
+                  <el-form-item label-width="120px" label="下次联系:" prop="NextContact" class="postInfo-container-item">
+                    <el-date-picker
+                      v-model="postForm.NextContact"
+                      type="datetime"
+                      placeholder="选择日期时间"
+                    />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+            </div>
+            <div class="postInfo-container">
+              <el-row>
+                <el-col :span="23">
+                  <el-form-item label-width="120px" label="备注:">
+                    <el-input v-model="postForm.remarks" :rows="4" type="textarea" class="article-textarea" placeholder="请输入备注" />
+                  </el-form-item>
+                </el-col>
+              </el-row>
+              <el-row>
+                <el-col :span="21">   .
+                </el-col>
+                <el-col :span="3">
+                  <el-button v-loading="loading" type="success" @click="submitForm">
+                    提交
+                  </el-button>
+                </el-col>
+              </el-row>
+            </div>
+
+          </el-col>
+        </el-row>
+      </el-form>
+    </el-dialog>
   </div>
 </template>
 
@@ -117,19 +186,19 @@ const defaultForm = {
   status: 'draft',
   uuid: generateUUID(),
   userid: null,
-  customerId: null, 
-  DocumentaryContact: null, 
-  DocumentaryMode: null, 
-  DocumentaryProgress: null, 
-  NextContact: null, 
-  remarks: null,
+  customerId: null,
+  DocumentaryContact: null,
+  DocumentaryMode: null,
+  DocumentaryProgress: null,
+  NextContact: null,
+  remarks: null
 }
 const formLabel = {
   customerId: '公司名称',
   DocumentaryContact: '跟单联系人',
   DocumentaryMode: '跟单方式',
   DocumentaryProgress: '跟单进度',
-  NextContact: '下次联系',
+  NextContact: '下次联系'
 }
 
 export default {
@@ -168,41 +237,51 @@ export default {
       postForm: Object.assign({}, defaultForm),
       CorporateName: null,
       loading: false,
+      loadingList: true,
+      dialogVisible: false,
       customerListOptions: [],
       rules: {
         customerId: [{ validator: validateRequire }],
         DocumentaryContact: [{ validator: validateRequire }],
         DocumentaryMode: [{ validator: validateRequire }],
         DocumentaryProgress: [{ validator: validateRequire }],
-        NextContact: [{ validator: validateRequire }],
+        NextContact: [{ validator: validateRequire }]
       },
       tempRoute: {},
       documentaryModeListOptions: [{
-          value: '1',
-          label: '电话沟通'
-        }, {
-          value: '2',
-          label: '上门拜访'
-        },
-        {
-          value: '3',
-          label: '微信QQ沟通'
-        }
+        value: '1',
+        label: '电话沟通'
+      }, {
+        value: '2',
+        label: '上门拜访'
+      },
+      {
+        value: '3',
+        label: '微信QQ沟通'
+      },
+      {
+        value: '4',
+        label: 'Email沟通'
+      },
+      {
+        value: '5',
+        label: '其他方式沟通'
+      }
       ],
       DocumentaryProgress: [
-        {          
+        {
           value: '1',
           label: '结束跟单'
         },
-        {          
+        {
           value: '2',
           label: '初次沟通'
         },
-        {          
+        {
           value: '3',
           label: '有意向'
         },
-        {          
+        {
           value: '4',
           label: '考虑中'
         }
@@ -213,7 +292,7 @@ export default {
         rows: 20
       },
       listDocumentary: [],
-      listDocumentaryTotal: 0,
+      listDocumentaryTotal: 0
     }
   },
   computed: {
@@ -228,10 +307,11 @@ export default {
     this.getUser();
   },
   methods: {
-    fetchListByCustomerDocumentary(){
+    fetchListByCustomerDocumentary() {
       fetchListByCustomerDocumentary(this.listQuery).then(response => {
         this.listDocumentary = response.data.items;
         this.listDocumentaryTotal = response.data.total;
+        this.loadingList = false;
       }).catch(err => {
         console.log(err)
       })
@@ -264,8 +344,7 @@ export default {
       document.title = `${title} - ${this.CorporateName}`
     },
     submitForm() {
-      console.log(this.postForm);
-      this.postForm.NextContact = new Date(this.postForm.NextContact).getTime()/1000;
+      this.postForm.NextContact = new Date(this.postForm.NextContact).getTime() / 1000;
       this.$refs.postForm.validate(valid => {
         if (valid) {
           this.loading = true
@@ -280,7 +359,9 @@ export default {
               duration: 2000
             });
             this.loading = false;
+            this.postForm = Object.assign({}, defaultForm),
             this.postForm.uuid = generateUUID();
+            this.dialogVisible = false;
           }).catch(err => {
             this.loading = false;
             console.log(err);
@@ -313,45 +394,75 @@ export default {
         this.customerListOptions = response.data.items;
       })
     },
-    formatterDocumentaryMode(key){
-      switch(Number(key)){
-        case 1:{
+    formatterDocumentaryMode(key) {
+      switch (Number(key)) {
+        case 1: {
           return '电话沟通';
         }
-        case 2:{
+        case 2: {
           return '上门拜访';
         }
-        case 3:{
+        case 3: {
           return '微信QQ沟通';
+        }
+        case 4: {
+          return 'Email沟通';
+        }
+        case 5: {
+          return '其他方式沟通';
         }
       }
     },
-    formatterDocumentaryProgress(key){
-      switch(Number(key)){
-        case 1:{
+    formatterDocumentaryProgress(key) {
+      switch (Number(key)) {
+        case 1: {
           return '结束跟单';
         }
-        case 2:{
+        case 2: {
           return '初次沟通';
         }
-        case 3:{
+        case 3: {
           return '有意向';
         }
-        case 4:{
+        case 4: {
           return '考虑中';
         }
       }
     },
-    deleteDocumentary(uuid){
-      deleteDocumentary(uuid).then(response => {
-        this.fetchListByCustomerDocumentary();
-        this.$message({
-          message: '删除成功',
-          type: 'success',
-          showClose: true,
-          duration: 1000
-        });
-      })
+    handleCommand(e, item) {
+      switch(e){
+        case 'del':{
+          this.$confirm('此操作将该信息删除, 是否继续?', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            deleteDocumentary(item.uuid).then(response => {
+              this.fetchListByCustomerDocumentary();
+              this.$message({
+                message: '删除成功',
+                type: 'success',
+                showClose: true,
+                duration: 1000
+              });
+            });
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消删除'
+            });
+          });
+          break;
+        }
+        case 'edit':{
+          this.dialogVisible = true;
+          this.postForm = Object.assign({}, item);
+          this.postForm.NextContact = this.postForm.NextContact * 1000;
+          break;
+        }
+        default:
+          break;
+      }
     }
   }
 }

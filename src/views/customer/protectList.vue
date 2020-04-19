@@ -18,7 +18,7 @@
 
       <el-table-column width="180px" align="center" label="录入时间">
         <template slot-scope="scope">
-          <span><i class="el-icon-time"></i> {{ scope.row.inputtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+          <span><i class="el-icon-time" /> {{ scope.row.inputtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
 
@@ -88,13 +88,13 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="备注" width="110">
+      <el-table-column label="备注" width="280">
         <template slot-scope="scope">
           <span>{{ scope.row.remarks }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column label="联系进度" width="110">
+      <el-table-column label="联系进度" width="280">
         <template slot-scope="scope">
           <span>{{ scope.row.ContactProgress }}</span>
         </template>
@@ -150,7 +150,7 @@ export default {
       listQuery: {
         type: 3, // 客户类型：1，公海客户，2，我的客户，3，保护期客户
         page: 1,
-        rows: 20
+        rows: 10
       }
     }
   },
@@ -194,12 +194,12 @@ export default {
         this.$message({
           type: 'info',
           message: '已取消移出'
-        });          
+        });
       });
     },
-    onSearch(data){
+    onSearch(data) {
       this.listLoading = true;
-      fetchCustomerList({...this.listQuery, ...data}).then(response => {
+      fetchCustomerList({ ...this.listQuery, ...data }).then(response => {
         this.list = response.data.items;
         this.total = response.data.total;
         this.listLoading = false;

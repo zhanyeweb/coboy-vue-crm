@@ -30,15 +30,15 @@ export default {
       type: Object,
       required: true
     },
-    dateData:{
+    dateData: {
       type: Array,
       required: true
     },
-    contractAmountChartData:{
+    contractAmountChartData: {
       type: Array,
       required: true
     },
-    receivablesChartData:{
+    receivablesChartData: {
       type: Array,
       required: true
     }

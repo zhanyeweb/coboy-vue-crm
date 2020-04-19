@@ -25,7 +25,7 @@
       </el-table-column>
       <el-table-column width="180px" align="center" label="录入时间">
         <template slot-scope="scope">
-          <span><i class="el-icon-time"></i> {{ scope.row.inputtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+          <span><i class="el-icon-time" /> {{ scope.row.inputtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
       <el-table-column width="220px" align="center" label="操作">
@@ -86,17 +86,17 @@ const formLabel = {
   personInCharge: '负责人'
 }
 export default {
-  name: 'warehouse',
+  name: 'Warehouse',
   components: { Pagination },
   data() {
     const validateRequire = (rule, value, callback) => {
-      console.log('value',value);
+      console.log('value', value);
       if (value === '' || value === null) {
         this.$message({
           message: formLabel[rule.field] + '为必传项',
           type: 'error'
         })
-        callback(new Error(formLabel[rule.field]  + '为必传项'))
+        callback(new Error(formLabel[rule.field] + '为必传项'))
       } else {
         callback()
       }
@@ -105,7 +105,7 @@ export default {
       postForm: Object.assign({}, defaultFormData),
       rules: {
         warehouseName: [{ validator: validateRequire }],
-        personInCharge: [{ validator: validateRequire }],
+        personInCharge: [{ validator: validateRequire }]
       },
       list: null,
       total: 0,
@@ -116,7 +116,7 @@ export default {
         token: null
       },
       dialogVisible: false,
-      dialogType: 'new',
+      dialogType: 'new'
     }
   },
   computed: {
@@ -157,7 +157,7 @@ export default {
         type: 'warning'
       })
         .then(async() => {
-          await delWarehouse({id:row.id})
+          await delWarehouse({ id: row.id })
           this.getList()
           this.$message({
             type: 'success',
@@ -167,7 +167,7 @@ export default {
         .catch(err => { console.error(err) })
     },
     confirmWarehouse() {
-       this.$refs.postForm.validate(valid => {
+      this.$refs.postForm.validate(valid => {
         if (valid) {
           this.loading = true
           saveWarehouse(this.postForm).then(response => {
@@ -189,7 +189,7 @@ export default {
           return false;
         }
       })
-    },
+    }
   }
 }
 </script>

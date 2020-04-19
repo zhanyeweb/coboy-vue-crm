@@ -3,7 +3,7 @@
     <el-form ref="postForm" :model="postForm" :rules="rules" class="form-container">
 
       <sticky :z-index="10" :class-name="'sub-navbar '+postForm.status">
-        
+
         <el-button v-loading="loading" type="success" @click="submitForm">
           提交
         </el-button>
@@ -19,68 +19,70 @@
           <el-col :span="15">
             <el-form-item style="margin-top: 40px;margin-bottom: 40px;" label-width="100px" label="产品名称:" prop="productName">
               <el-input v-model="postForm.productName" :rows="1" :disabled="true" type="text" class="article-input" autosize placeholder="请输入产品名称" />
-                <el-button type="success" @click="showProductDialog">
+              <el-button type="success" @click="showProductDialog">
                 选择
-                </el-button>
+              </el-button>
             </el-form-item>
           </el-col>
         </div>
         <el-form-item style="margin-bottom: 40px;" label-width="100px" label="储存仓库:" prop="warehouseId">
-            <el-select v-model="postForm.warehouseId" placeholder="请选择">
-              <template v-for="group in warehouseData">
+          <el-select v-model="postForm.warehouseId" placeholder="请选择">
+            <template v-for="group in warehouseData">
               <el-option-group
                 v-if="group.children.length > 0"
                 :key="group.uuid"
-                :label="group.warehouseName">
+                :label="group.warehouseName"
+              >
                 <el-option
                   v-for="item in group.children"
                   :key="item.uuid"
                   :label="item.warehouseName"
-                  :value="item.id">
-                </el-option>
+                  :value="item.id"
+                />
               </el-option-group>
-                <el-option
-                  v-else
-                  :key="group.uuid"
-                  :label="group.warehouseName"
-                  :value="group.id">
-                </el-option>
-              </template>
-            </el-select>
+              <el-option
+                v-else
+                :key="group.uuid"
+                :label="group.warehouseName"
+                :value="group.id"
+              />
+            </template>
+          </el-select>
         </el-form-item>
         <el-form-item style="margin-bottom: 40px;" label-width="100px" label="选择供应商:" prop="supplierId">
-            <el-select v-model="postForm.supplierId" placeholder="请选择">
-              <template v-for="group in supplierData">
+          <el-select v-model="postForm.supplierId" placeholder="请选择">
+            <template v-for="group in supplierData">
               <el-option-group
                 v-if="group.children.length > 0"
                 :key="group.uuid"
-                :label="group.name">
+                :label="group.name"
+              >
                 <el-option
                   v-for="item in group.children"
                   :key="item.uuid"
                   :label="item.name"
-                  :value="item.id">
-                </el-option>
+                  :value="item.id"
+                />
               </el-option-group>
-                <el-option
-                  v-else
-                  :key="group.uuid"
-                  :label="group.name"
-                  :value="group.id">
-                </el-option>
-              </template>
-            </el-select>
+              <el-option
+                v-else
+                :key="group.uuid"
+                :label="group.name"
+                :value="group.id"
+              />
+            </template>
+          </el-select>
         </el-form-item>
         <div class="postInfo-container" style="margin-bottom: 20px;">
           <el-row>
             <el-col :span="8">
-              <el-form-item label-width="120px" label="现有库存:" class="postInfo-container-item" >
+              <el-form-item label-width="120px" label="现有库存:" class="postInfo-container-item">
                 <el-input v-model="postForm.currentStock" :rows="1" :disabled="true" type="text" class="article-input" autosize placeholder="请输入库存" />
               </el-form-item>
             </el-col>
             <el-col :span="8">
               <el-form-item label-width="120px" label="新采购数量:" class="postInfo-container-item" prop="num">
-                <el-input v-model="postForm.num" :rows="1" @blur="onNumBlur" type="text" class="article-input" autosize placeholder="请输入新采购数量" />
+                <el-input v-model="postForm.num" :rows="1" type="text" class="article-input" autosize placeholder="请输入新采购数量" @blur="onNumBlur" />
               </el-form-item>
             </el-col>
           </el-row>
@@ -89,12 +91,12 @@
           <el-row>
             <el-col :span="8">
               <el-form-item label-width="120px" label="单价:" class="postInfo-container-item" prop="unitPrice">
-                <el-input v-model="postForm.unitPrice" :rows="1" @blur="onUnitPriceBlur" type="text" class="article-input" autosize placeholder="请输入单价" />
+                <el-input v-model="postForm.unitPrice" :rows="1" type="text" class="article-input" autosize placeholder="请输入单价" @blur="onUnitPriceBlur" />
               </el-form-item>
             </el-col>
             <el-col :span="8">
               <el-form-item label-width="120px" label="总折扣:" class="postInfo-container-item" prop="totalDiscount">
-                <el-input v-model="postForm.totalDiscount" :rows="1" @blur="onTotalDiscountBlur" type="text" class="article-input" autosize placeholder="请输入成本价" />
+                <el-input v-model="postForm.totalDiscount" :rows="1" type="text" class="article-input" autosize placeholder="请输入成本价" @blur="onTotalDiscountBlur" />
               </el-form-item>
             </el-col>
             <el-col :span="8">
@@ -107,7 +109,7 @@
         <div class="postInfo-container" style="margin-bottom: 20px;">
           <el-row>
             <el-col :span="8">
-              <el-form-item label-width="120px" label="总运费:" class="postInfo-container-item" >
+              <el-form-item label-width="120px" label="总运费:" class="postInfo-container-item">
                 <el-input v-model="postForm.totalFreight" :rows="1" type="text" class="article-input" autosize placeholder="请输入总运费" />
               </el-form-item>
             </el-col>
@@ -116,24 +118,24 @@
                 <el-select v-model="postForm.payType" placeholder="请选择">
                   <el-option
                     :label="'现金支付'"
-                    :value="1">
-                  </el-option>
+                    :value="1"
+                  />
                   <el-option
                     :label="'银行转账'"
-                    :value="2">
-                  </el-option>
+                    :value="2"
+                  />
                   <el-option
                     :label="'支付宝'"
-                    :value="3">
-                  </el-option>
+                    :value="3"
+                  />
                   <el-option
                     :label="'支票'"
-                    :value="4">
-                  </el-option>
+                    :value="4"
+                  />
                   <el-option
                     :label="'其他'"
-                    :value="5">
-                  </el-option>
+                    :value="5"
+                  />
                 </el-select>
               </el-form-item>
             </el-col>
@@ -152,8 +154,8 @@
                   v-model="postForm.procurementDate"
                   type="date"
                   value-format="timestamp"
-                  placeholder="选择日期">
-                </el-date-picker>
+                  placeholder="选择日期"
+                />
               </el-form-item>
             </el-col>
             <el-col :span="23">
@@ -166,7 +168,7 @@
       </div>
     </el-form>
     <el-dialog width="1000px" :visible.sync="productDialogVisible" :title="'选择产品'">
-        <product-dialog :onCheckProduct="onCheckProduct" />
+      <product-dialog :on-check-product="onCheckProduct" />
     </el-dialog>
   </div>
 </template>
@@ -199,7 +201,7 @@ const defaultForm = {
   payType: null,
   personInCharge: null,
   procurementDate: null,
-  info: null,
+  info: null
 }
 const formLabel = {
   productId: '产品',
@@ -223,13 +225,13 @@ export default {
   },
   data() {
     const validateRequire = (rule, value, callback) => {
-      console.log('value',value);
+      console.log('value', value);
       if (value === '' || value === null) {
         this.$message({
           message: formLabel[rule.field] + '为必传项',
           type: 'error'
         })
-        callback(new Error(formLabel[rule.field]  + '为必传项'))
+        callback(new Error(formLabel[rule.field] + '为必传项'))
       } else {
         callback()
       }
@@ -258,7 +260,7 @@ export default {
         cateUuid: [{ validator: validateRequire }],
         stock: [{ validator: validateRequire }],
         costPrice: [{ validator: validateRequire }],
-        sellingPrice: [{ validator: validateRequire }],
+        sellingPrice: [{ validator: validateRequire }]
       },
       tempRoute: {},
       warehouseData: [],
@@ -326,20 +328,20 @@ export default {
         this.listLoading = false
       })
     },
-    onUnitPriceBlur(){
+    onUnitPriceBlur() {
       this.postForm.totalCost = Number(this.postForm.unitPrice) * Number(this.postForm.num);
     },
-    onNumBlur(){
+    onNumBlur() {
       this.postForm.totalCost = Number(this.postForm.unitPrice) * Number(this.postForm.num);
     },
-    onTotalDiscountBlur(){
+    onTotalDiscountBlur() {
       this.postForm.totalCost = this.postForm.totalCost - Number(this.postForm.totalDiscount);
     },
     getUser() {
       this.postForm.userid = this.userid;
     },
     showProductDialog() {
-        this.productDialogVisible = true;
+      this.productDialogVisible = true;
     },
     fetchData(uuid) {
       fetchProduct(uuid).then(response => {
@@ -363,7 +365,7 @@ export default {
       this.$refs.postForm.validate(valid => {
         if (valid) {
           this.loading = true;
-          this.postForm.procurementDate = this.postForm.procurementDate/1000;
+          this.postForm.procurementDate = this.postForm.procurementDate / 1000;
           savePurchases(this.postForm).then(response => {
             this.$notify({
               title: '成功',
@@ -383,18 +385,18 @@ export default {
       })
     },
     onCheckProduct(row) {
-        const productData = deepClone(row);
-        this.productDialogVisible = false;
-        this.postForm.productId = productData.id;
-        this.postForm.productName = productData.name;
-        this.postForm.currentStock = productData.stock;
+      const productData = deepClone(row);
+      this.productDialogVisible = false;
+      this.postForm.productId = productData.id;
+      this.postForm.productName = productData.name;
+      this.postForm.currentStock = productData.stock;
     },
     getRemoteUserList(query) {
       searchUser(query).then(response => {
         if (!response.data.items) return
         this.userListOptions = response.data.items.map(v => v.name)
       })
-    },
+    }
   }
 }
 </script>

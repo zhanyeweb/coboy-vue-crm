@@ -45,9 +45,9 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="籍贯" width="110">
+      <el-table-column label="生日" width="110">
         <template slot-scope="scope">
-          <span>{{ scope.row.NativePlace }}</span>
+          <span v-if="scope.row.birthday">{{ scope.row.birthday | parseTime('{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
 

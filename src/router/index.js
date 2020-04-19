@@ -185,7 +185,7 @@ export const asyncRoutes = [
         name: 'high-seas-customer',
         meta: { title: '查看公海客户' },
         hidden: true
-      },
+      }
     ]
   },
   {
@@ -371,7 +371,7 @@ export const asyncRoutes = [
         component: () => import('@/views/product/supplier'),
         name: 'product',
         meta: { title: '供应商管理' }
-      },
+      }
     ]
   },
   {

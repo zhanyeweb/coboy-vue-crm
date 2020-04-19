@@ -53,7 +53,7 @@ export default {
     deep: true
   },
   mounted() {
-    console.log('this.$store.state.department.treeData,',this.$store.state.department.treeData);
+    console.log('this.$store.state.department.treeData,', this.$store.state.department.treeData);
   },
   created() {
     this.getDepartmentList();

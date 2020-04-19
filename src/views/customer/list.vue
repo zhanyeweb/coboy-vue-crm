@@ -20,7 +20,7 @@
 
       <el-table-column width="180px" align="center" label="录入时间">
         <template slot-scope="scope">
-          <span><i class="el-icon-time"></i> {{ scope.row.inputtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+          <span><i class="el-icon-time" /> {{ scope.row.inputtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
 
@@ -32,7 +32,7 @@
       <el-table-column width="150px" align="center" label="副业务员">
         <template slot-scope="scope">
           <span v-for="(item, index) in scope.row.subBusiness" :key="index">
-            {{item.FullName}}
+            {{ item.FullName }}
           </span>
           <el-button v-if="isAccess" size="mini" @click="handleShowDialog(scope.row.id, scope.row.userid)">添加修改</el-button>
         </template>
@@ -98,7 +98,7 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="备注" width="110">
+      <el-table-column label="备注" width="280">
         <template slot-scope="scope">
           <span>{{ scope.row.remarks }}</span>
         </template>
@@ -137,8 +137,8 @@
           :key="item.userid"
           :label="item.FullName"
           :value="item.userid"
-          :disabled="item.disabled">
-        </el-option>
+          :disabled="item.disabled"
+        />
       </el-select>
       <el-button v-loading="loading" type="success" @click="submitFollowUpOrderId">
         提交
@@ -196,10 +196,10 @@ export default {
       'token',
       'permission'
     ]),
-    isAccess: function(){
+    isAccess: function() {
       let permission = [];
-      if(this.permission){
-        permission = this.permission.split(",");
+      if (this.permission) {
+        permission = this.permission.split(',');
       }
       return permission.includes(this.userid);
     }
@@ -211,7 +211,7 @@ export default {
   methods: {
     fetchUserList() {
       fetchUserList(this.listUserQuery).then(response => {
-        this.userList = response.data.items.filter(o=>o.userid!=1);
+        this.userList = response.data.items.filter(o => o.userid != 1);
         this.userTotal = response.data.total
       });
     },
@@ -243,14 +243,14 @@ export default {
         this.$message({
           type: 'info',
           message: '已取消移出'
-        });          
+        });
       });
     },
-    handleShowDialog(customerId,userid) {
+    handleShowDialog(customerId, userid) {
       this.followUpOrderIds = [];
-      this.currentCustomerId=customerId;
-      this.userList.map((o,k) => {
-        this.userList[k].disabled = o.userid=== userid ? true : false;
+      this.currentCustomerId = customerId;
+      this.userList.map((o, k) => {
+        this.userList[k].disabled = o.userid === userid;
       });
       followUpOrderId(customerId).then(response => {
         const items = response.data.items;
@@ -262,17 +262,17 @@ export default {
       this.dialogVisible = false;
     },
     submitFollowUpOrderId() {
-      saveFollowUpOrderId({customerId:this.currentCustomerId, followUpOrderIds: this.followUpOrderIds}).then(response => {
+      saveFollowUpOrderId({ customerId: this.currentCustomerId, followUpOrderIds: this.followUpOrderIds }).then(response => {
         this.dialogVisible = false;
-          this.$message({
-            message: '操作成功',
-            type: 'success'
-          })
+        this.$message({
+          message: '操作成功',
+          type: 'success'
+        })
       });
     },
-    onSearch(data){
+    onSearch(data) {
       this.listLoading = true;
-      fetchCustomerList({...this.listQuery, ...data}).then(response => {
+      fetchCustomerList({ ...this.listQuery, ...data }).then(response => {
         this.list = response.data.items;
         this.total = response.data.total;
         this.listLoading = false;

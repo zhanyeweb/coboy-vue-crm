@@ -21,13 +21,13 @@
 
       <el-table-column width="180px" align="center" label="开始日期">
         <template slot-scope="scope">
-          <span><i class="el-icon-time"></i> {{ scope.row.StartDate | parseTime('{y}-{m}-{d}') }}</span>
+          <span><i class="el-icon-time" /> {{ scope.row.StartDate | parseTime('{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
 
       <el-table-column width="180px" align="center" label="结束日期">
         <template slot-scope="scope">
-          <span><i class="el-icon-time"></i> {{ scope.row.EndDate | parseTime('{y}-{m}-{d}') }}</span>
+          <span><i class="el-icon-time" /> {{ scope.row.EndDate | parseTime('{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
 
@@ -57,7 +57,7 @@
 
       <el-table-column width="180px" align="center" label="录入时间">
         <template slot-scope="scope">
-          <span><i class="el-icon-time"></i> {{ scope.row.inputtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+          <span><i class="el-icon-time" /> {{ scope.row.inputtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
 
@@ -69,9 +69,9 @@
 
       <el-table-column align="center" label="操作" width="120" fixed="right">
         <template slot-scope="scope">
-            <el-button type="primary" size="small" icon="el-icon-edit" @click="handleEditDialog(scope.row.uuid)">
-              编辑
-            </el-button>
+          <el-button type="primary" size="small" icon="el-icon-edit" @click="handleEditDialog(scope.row.uuid)">
+            编辑
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -87,20 +87,6 @@ import Pagination from '@/components/Pagination' // Secondary package based on e
 export default {
   name: 'ContractList',
   components: { Pagination },
-  props: {
-    isEdit: {
-      type: Boolean,
-      default: false
-    },
-    customerId: {
-      type: Number,
-      default: '' 
-    },
-    handleEditDialog: {
-      type: Function,
-      default: null
-    }
-  },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -111,6 +97,20 @@ export default {
       return statusMap[status]
     }
   },
+  props: {
+    isEdit: {
+      type: Boolean,
+      default: false
+    },
+    customerId: {
+      type: Number,
+      default: ''
+    },
+    handleEditDialog: {
+      type: Function,
+      default: null
+    }
+  },
   data() {
     return {
       list: null,
@@ -119,7 +119,7 @@ export default {
       listQuery: {
         page: 1,
         rows: 20,
-        customerId:this.customerId
+        customerId: this.customerId
       }
     }
   },

@@ -3,7 +3,7 @@
     <el-form ref="postForm" :model="postForm" :rules="rules" class="form-container">
 
       <sticky :z-index="10" :class-name="'sub-navbar '+postForm.status">
-        
+
         <el-button v-loading="loading" type="success" @click="submitForm">
           提交
         </el-button>
@@ -23,27 +23,28 @@
           </el-col>
         </div>
         <el-form-item style="margin-bottom: 40px;" label-width="100px" label="产品分类:" prop="cateUuid">
-            <el-select v-model="postForm.cateUuid" placeholder="请选择">
-              <template v-for="group in cateData">
+          <el-select v-model="postForm.cateUuid" placeholder="请选择">
+            <template v-for="group in cateData">
               <el-option-group
                 v-if="group.children.length > 0"
                 :key="group.uuid"
-                :label="group.name">
+                :label="group.name"
+              >
                 <el-option
                   v-for="item in group.children"
                   :key="item.uuid"
                   :label="item.name"
-                  :value="item.uuid">
-                </el-option>
+                  :value="item.uuid"
+                />
               </el-option-group>
-                <el-option
-                  v-else
-                  :key="group.uuid"
-                  :label="group.name"
-                  :value="group.uuid">
-                </el-option>
-              </template>
-            </el-select>
+              <el-option
+                v-else
+                :key="group.uuid"
+                :label="group.name"
+                :value="group.uuid"
+              />
+            </template>
+          </el-select>
         </el-form-item>
         <div class="postInfo-container" style="margin-bottom: 20px;">
           <el-row>
@@ -103,7 +104,7 @@ const defaultForm = {
   minStock: null,
   costPrice: null,
   sellingPrice: null,
-  content: null,
+  content: null
 }
 const formLabel = {
   name: '产品名称',
@@ -126,13 +127,13 @@ export default {
   },
   data() {
     const validateRequire = (rule, value, callback) => {
-      console.log('value',value);
+      console.log('value', value);
       if (value === '' || value === null) {
         this.$message({
           message: formLabel[rule.field] + '为必传项',
           type: 'error'
         })
-        callback(new Error(formLabel[rule.field]  + '为必传项'))
+        callback(new Error(formLabel[rule.field] + '为必传项'))
       } else {
         callback()
       }
@@ -161,7 +162,7 @@ export default {
         cateUuid: [{ validator: validateRequire }],
         stock: [{ validator: validateRequire }],
         costPrice: [{ validator: validateRequire }],
-        sellingPrice: [{ validator: validateRequire }],
+        sellingPrice: [{ validator: validateRequire }]
       },
       tempRoute: {},
       cateData: [],
@@ -272,37 +273,37 @@ export default {
         this.userListOptions = response.data.items.map(v => v.name)
       })
     },
-    uploadExcel(item){
+    uploadExcel(item) {
       const fileObj = item.file;
       // FormData 对象
       const form = new FormData();
       form.append('FILE_UPLOAD', fileObj);
       form.append('type', 3);
       uploadExcel(form).then(response => {
-            this.$notify({
-              title: '成功',
-              message: '操作成功',
-              type: 'success',
-              duration: 2000
-            });
-            this.loading = false;
-            this.$router.push({path:'/customer/protectList'})
-          }).catch(err => {
-            this.loading = false;
-            console.log(err);
+        this.$notify({
+          title: '成功',
+          message: '操作成功',
+          type: 'success',
+          duration: 2000
+        });
+        this.loading = false;
+        this.$router.push({ path: '/customer/protectList' })
+      }).catch(err => {
+        this.loading = false;
+        console.log(err);
       });
     },
     downFile(url, filename) {
-        // 创建隐藏的可下载链接
-        const eleLink = document.createElement('a');
-        eleLink.download = filename;
-        eleLink.style.display = 'none';
-        eleLink.href = url;
-        // 触发点击
-        document.body.appendChild(eleLink);
-        eleLink.click();
-        // 然后移除
-        document.body.removeChild(eleLink);
+      // 创建隐藏的可下载链接
+      const eleLink = document.createElement('a');
+      eleLink.download = filename;
+      eleLink.style.display = 'none';
+      eleLink.href = url;
+      // 触发点击
+      document.body.appendChild(eleLink);
+      eleLink.click();
+      // 然后移除
+      document.body.removeChild(eleLink);
     }
   }
 }

@@ -9,12 +9,11 @@
         <el-upload
           class="uploadExcel"
           action=""
-          :show-file-list=false
-          :limit="1"
+          :show-file-list="false"
           :http-request="uploadExcel"
           accept="application/vnd.ms-excel, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
-          >
-          <el-button v-loading="loading" style="margin-left: 10px;" type="primary" >
+        >
+          <el-button v-loading="loading" style="margin-left: 10px;" type="primary">
             导入Excel数据
           </el-button>
         </el-upload>
@@ -55,13 +54,74 @@
         <div class="postInfo-container" style="margin-bottom: 20px;">
           <el-row>
             <el-col :span="8">
-              <el-form-item label-width="120px" label="国家:" class="postInfo-container-item">
-                <el-input v-model="postForm.country" :rows="1" type="text" class="article-input" autosize placeholder="请输入国家" />
+              <el-form-item label-width="120px" label="邮箱:" class="postInfo-container-item">
+                <el-input v-model="postForm.email" :rows="1" type="text" class="article-input" autosize placeholder="请输入邮箱" />
               </el-form-item>
             </el-col>
             <el-col :span="8">
+              <el-form-item label-width="120px" label="Whatsapp:" class="postInfo-container-item" prop="whatsapp">
+                <el-input v-model="postForm.whatsapp" :rows="1" type="text" class="article-input" autosize placeholder="请输入Whatsapp" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label-width="120px" label="LinkedIn:" class="postInfo-container-item" prop="linkedin">
+                <el-input v-model="postForm.linkedin" :rows="1" type="text" class="article-input" autosize placeholder="请输入LinkedIn" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </div>
+        <div v-for="(item, index) in postForm.moreConact" :key="index"> 
+        <div class="postInfo-container" style="margin-bottom: 20px;">
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label-width="120px" :label="'副联系人'+(index+1)+':'" class="postInfo-container-item" prop="link_man">
+                <el-input v-model="item.link_man" :rows="1" type="text" class="article-input" autosize placeholder="请输入主要联系人" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label-width="120px" label="职位:" class="postInfo-container-item" prop="position">
+                <el-input v-model="item.position" :rows="1" type="text" class="article-input" autosize placeholder="请输入职位" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label-width="120px" label="电话:" class="postInfo-container-item" prop="tel">
+                <el-input v-model="item.tel" :rows="1" type="text" class="article-input" autosize placeholder="请输入电话" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </div>
+        <div class="postInfo-container" style="margin-bottom: 20px;">
+          <el-row>
+            <el-col :span="8">
               <el-form-item label-width="120px" label="邮箱:" class="postInfo-container-item">
-                <el-input v-model="postForm.email" :rows="1" type="text" class="article-input" autosize placeholder="请输入邮箱" />
+                <el-input v-model="item.email" :rows="1" type="text" class="article-input" autosize placeholder="请输入邮箱" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label-width="120px" label="Whatsapp:" class="postInfo-container-item" prop="whatsapp">
+                <el-input v-model="item.whatsapp" :rows="1" type="text" class="article-input" autosize placeholder="请输入Whatsapp" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label-width="120px" label="LinkedIn:" class="postInfo-container-item" prop="linkedin">
+                <el-input v-model="item.linkedin" :rows="1" type="text" class="article-input" autosize placeholder="请输入LinkedIn" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </div>
+        </div>
+        <div class="postInfo-container" style="margin-bottom: 42px;padding-left:40px;"> 
+          <el-row>
+            <el-col :span="23">
+              <el-button @click="addContact">添加联系人</el-button>
+            </el-col>
+          </el-row>
+        </div>
+        <div class="postInfo-container" style="margin-bottom: 20px;">
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label-width="120px" label="国家:" class="postInfo-container-item">
+                <el-input v-model="postForm.country" :rows="1" type="text" class="article-input" autosize placeholder="请输入国家" />
               </el-form-item>
             </el-col>
             <el-col :span="8">
@@ -84,16 +144,16 @@
                 <el-select v-model="postForm.type" placeholder="请选择">
                   <el-option
                     :label="'我的客户'"
-                    :value="2">
-                  </el-option>
+                    :value="2"
+                  />
                   <el-option
                     :label="'保护期客户'"
-                    :value="3">
-                  </el-option>
+                    :value="3"
+                  />
                   <el-option
                     :label="'公海客户'"
-                    :value="1">
-                  </el-option>
+                    :value="1"
+                  />
                 </el-select>
               </el-form-item>
             </el-col>
@@ -104,50 +164,50 @@
           <el-input v-model="postForm.address" :rows="1" type="text" class="article-input" autosize placeholder="请输入地址" />
         </el-form-item>
 
-        <el-form-item style="margin-bottom: 20px;" label-width="100px" label="网站:" >
+        <el-form-item style="margin-bottom: 20px;" label-width="100px" label="网站:">
           <el-input v-model="postForm.website" :rows="1" type="text" class="article-input" autosize placeholder="请输入网站" />
         </el-form-item>
 
-        <el-form-item style="margin-bottom: 20px;" label-width="100px" label="主营产品:" >
+        <el-form-item style="margin-bottom: 20px;" label-width="100px" label="主营产品:">
           <el-input v-model="postForm.MainProducts" :rows="1" type="text" class="article-input" autosize placeholder="请输入主营产品" />
         </el-form-item>
         <div class="postInfo-container">
-        <el-row>
-          <el-col :span="23">
-            <el-form-item style="margin-bottom: 20px;" label-width="100px" label="联系进度:">
-              <el-input v-model="postForm.ContactProgress" :rows="4" type="textarea" class="article-textarea" placeholder="请输入联系进度" />
-            </el-form-item>
-          </el-col>
-          <el-col :span="23">
-            <el-form-item style="margin-bottom: 20px;" label-width="100px" label="备注:">
-              <el-input v-model="postForm.remarks" :rows="4" type="textarea" class="article-textarea" placeholder="请输入备注" />
-            </el-form-item>
-          </el-col>
-        </el-row>
-        <el-row>
-          <el-col :span="21">   .
-          </el-col>
-          <el-col :span="3">        
-            <el-button v-loading="loading" type="success" @click="submitForm">
-              提交
-            </el-button>
-          </el-col>
-        </el-row>
+          <el-row>
+            <el-col :span="23">
+              <el-form-item style="margin-bottom: 20px;" label-width="100px" label="联系进度:">
+                <el-input v-model="postForm.ContactProgress" :rows="4" type="textarea" class="article-textarea" placeholder="请输入联系进度" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="23">
+              <el-form-item style="margin-bottom: 20px;" label-width="100px" label="备注:">
+                <el-input v-model="postForm.remarks" :rows="4" type="textarea" class="article-textarea" placeholder="请输入备注" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+          <el-row>
+            <el-col :span="21">   .
+            </el-col>
+            <el-col :span="3">
+              <el-button v-loading="loading" type="success" @click="submitForm">
+                提交
+              </el-button>
+            </el-col>
+          </el-row>
         </div>
       </div>
     </el-form>
     <el-dialog width="1200px" :visible.sync="dialogVisible" :title="dialogType==='edit'?'编辑合同':'新建合同'">
-      <contract-detail ref="contractDetailDom" v-if="postForm.id" :customerId="postForm.id" :handleHideDialog="handleHideDialog" />
+      <contract-detail v-if="postForm.id" ref="contractDetailDom" :customer-id="postForm.id" :handle-hide-dialog="handleHideDialog" />
     </el-dialog>
-    <div class="createPost-main-container" v-if="postForm.id">
-    <el-row>
-      <el-col :span="24">
-        <div class="panel-heading"><span style="margin-right:20px;">合同列表</span><el-button size="small" type="primary" @click="handleShowDialog">添加合同</el-button></div>
-      </el-col>
-    </el-row>
-    <div class="postInfo-container">
-      <contract-list ref="contractList" v-if="postForm.id" :customerId="postForm.id" :handleEditDialog="handleEditDialog" />
-    </div>
+    <div v-if="postForm.id" class="createPost-main-container">
+      <el-row>
+        <el-col :span="24">
+          <div class="panel-heading"><span style="margin-right:20px;">合同列表</span><el-button size="small" type="primary" @click="handleShowDialog">添加合同</el-button></div>
+        </el-col>
+      </el-row>
+      <div class="postInfo-container">
+        <contract-list v-if="postForm.id" ref="contractList" :customer-id="postForm.id" :handle-edit-dialog="handleEditDialog" />
+      </div>
     </div>
   </div>
 </template>
@@ -155,8 +215,8 @@
 <script>
 import { mapGetters, mapState } from 'vuex'
 import Sticky from '@/components/Sticky' // 粘性header组件
-import ContractDetail from './ContractDetail' 
-import ContractList from './ContractList' 
+import ContractDetail from './ContractDetail'
+import ContractList from './ContractList'
 import { validURL } from '@/utils/validate'
 import { searchUser } from '@/api/remote-search'
 import { fetchList as fetchDepartmentList } from '@/api/department';
@@ -165,7 +225,7 @@ import { getRoles } from '@/api/role';
 import { generateUUID } from '@/utils';
 
 const defaultForm = {
-  uuid: generateUUID(),
+  uuid: null,
   userid: null,
   type: 2, // 客户类型：1，公海客户，2，我的客户，3，保护期客户
   CorporateName: null,
@@ -180,7 +240,10 @@ const defaultForm = {
   address: null,
   website: null,
   MainProducts: null,
-  remarks: null
+  remarks: null,
+  whatsapp: null,
+  linkedin: null,
+  moreConact: []
 }
 const formLabel = {
   CorporateName: '公司名称',
@@ -196,7 +259,9 @@ const formLabel = {
   address: '地址',
   website: '网站',
   MainProducts: '主营产品',
-  remarks: '备注'
+  remarks: '备注',
+  whatsapp: 'Whatsapp',
+  linkedin: 'LinkedIn',
 }
 
 export default {
@@ -210,13 +275,13 @@ export default {
   },
   data() {
     const validateRequire = (rule, value, callback) => {
-      console.log('value',value);
+      console.log('value', value);
       if (value === '' || value === null) {
         this.$message({
           message: formLabel[rule.field] + '为必传项',
           type: 'error'
         })
-        callback(new Error(formLabel[rule.field]  + '为必传项'))
+        callback(new Error(formLabel[rule.field] + '为必传项'))
       } else {
         callback()
       }
@@ -243,8 +308,6 @@ export default {
       rules: {
         CorporateName: [{ validator: validateRequire }],
         PrimaryContact: [{ validator: validateRequire }],
-        position: [{ validator: validateRequire }],
-        tel: [{ validator: validateRequire }],
       },
       tempRoute: {},
       departData: [],
@@ -260,16 +323,18 @@ export default {
   computed: {
     ...mapGetters([
       'name',
-      'userid',
+      'userid'
     ]),
     ...mapState({
-      baseUrl: state => state.settings.baseUrl,
-    }),
+      baseUrl: state => state.settings.baseUrl
+    })
   },
   created() {
     if (this.isEdit) {
       const uuid = this.$route.params && this.$route.params.uuid;
       this.fetchData(uuid);
+    }else{
+      this.postForm.uuid = generateUUID();
     }
     this.getUser();
   },
@@ -316,7 +381,7 @@ export default {
             // }else if(this.postForm.type === 3){ // 保护期客户
             //   this.$router.push({path:'/customer/protectList'});
             // }
-            this.$router.push({path:'/customer/edit/' + this.postForm.uuid});
+            this.$router.push({ path: '/customer/edit/' + this.postForm.uuid });
           }).catch(err => {
             this.loading = false;
             console.log(err);
@@ -345,6 +410,17 @@ export default {
         this.$refs.contractDetailDom.fetchData(uuid);
       });
     },
+    addContact() {
+      this.postForm.moreConact.push({
+        uuid: generateUUID(),
+        link_man: null,
+        position: null,
+        tel: null,
+        email: null,
+        whatsapp: null,
+        linkedin: null
+      });
+    },
     draftForm() {
       if (this.postForm.CorporateName.length === 0 || this.postForm.tel.length === 0) {
         this.$message({
@@ -367,37 +443,63 @@ export default {
         this.userListOptions = response.data.items.map(v => v.name)
       })
     },
-    uploadExcel(item){
+    uploadExcel(item) {
+      this.loading = true;
       const fileObj = item.file;
       // FormData 对象
       const form = new FormData();
       form.append('FILE_UPLOAD', fileObj);
       form.append('type', 2);
       uploadExcel(form).then(response => {
-            this.$notify({
-              title: '成功',
-              message: '操作成功',
-              type: 'success',
-              duration: 2000
-            });
-            this.loading = false;
-            this.$router.push({path:'/customer/list'})
-          }).catch(err => {
-            this.loading = false;
-            console.log(err);
+        if(response.data){
+          const { importCount, notImportInfo } = response.data;
+          let html = '';
+          notImportInfo.map((o, i) => {
+            html += '<p>'+(i + 1)+'. '+ o +'</p>';
+          });
+          const _this = this;
+          const messageTxt = notImportInfo.length > 0 ? 
+          '<h5>导入条数：' + importCount + '</h5><h5>存在重复相似数据：</h5>' + html 
+           : '导入成功';
+          this.$notify({
+            title: '系统提示：',
+            dangerouslyUseHTMLString: true,
+            message: messageTxt,
+            type: 'success',
+            duration: 0,
+            onClose: function() {
+              if(importCount === 0){
+                _this.$router.push({ path: '/customer/add' });
+              }else{
+                _this.$router.push({ path: '/customer/list' });
+              }
+            }
+          });
+          this.loading = false;
+        }else{
+          this.loading = false;
+          this.$notify.error({
+            title: '系统提示：',
+            message: response.message,
+            duration: 3000,
+          });
+        }
+      }).catch(err => {
+        this.loading = false;
+        console.log(err);
       });
     },
     downFile(url, filename) {
-        // 创建隐藏的可下载链接
-        const eleLink = document.createElement('a');
-        eleLink.download = filename;
-        eleLink.style.display = 'none';
-        eleLink.href = url;
-        // 触发点击
-        document.body.appendChild(eleLink);
-        eleLink.click();
-        // 然后移除
-        document.body.removeChild(eleLink);
+      // 创建隐藏的可下载链接
+      const eleLink = document.createElement('a');
+      eleLink.download = filename;
+      eleLink.style.display = 'none';
+      eleLink.href = url;
+      // 触发点击
+      document.body.appendChild(eleLink);
+      eleLink.click();
+      // 然后移除
+      document.body.removeChild(eleLink);
     }
   }
 }

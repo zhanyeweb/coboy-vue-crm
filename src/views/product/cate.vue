@@ -53,7 +53,7 @@ export default {
     deep: true
   },
   mounted() {
-    console.log('this.$store.state.productCate.treeData,',this.$store.state.productCate.treeData);
+    console.log('this.$store.state.productCate.treeData,', this.$store.state.productCate.treeData);
   },
   created() {
     this.getProductCateList();

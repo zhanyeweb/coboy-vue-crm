@@ -6,7 +6,7 @@
 import DocumentaryComponentsDetail from './components/DocumentaryTogetherDetail'
 
 export default {
-  name: 'documentaryTogetherDetail',
+  name: 'DocumentaryTogetherDetail',
   components: { DocumentaryComponentsDetail }
 }
 </script>

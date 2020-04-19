@@ -9,7 +9,7 @@
 
       <el-table-column min-width="300px" label="产品名称" fixed="left">
         <template slot-scope="{row}">
-            <span>{{ row.name }}</span>
+          <span>{{ row.name }}</span>
         </template>
       </el-table-column>
 
@@ -33,7 +33,7 @@
 
       <el-table-column width="180px" align="center" label="录入时间">
         <template slot-scope="scope">
-          <span><i class="el-icon-time"></i> {{ scope.row.inputtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+          <span><i class="el-icon-time" /> {{ scope.row.inputtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
 
@@ -58,12 +58,6 @@ import Pagination from '@/components/Pagination' // Secondary package based on e
 export default {
   name: 'ProductDialog',
   components: { Pagination },
-  props: {
-    onCheckProduct: {
-        type: Function,
-        default: null
-    }
-  },
   filters: {
     statusFilter(status) {
       const statusMap = {
@@ -72,6 +66,12 @@ export default {
         deleted: 'danger'
       }
       return statusMap[status]
+    }
+  },
+  props: {
+    onCheckProduct: {
+      type: Function,
+      default: null
     }
   },
   data() {

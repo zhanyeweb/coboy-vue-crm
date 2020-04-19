@@ -58,8 +58,8 @@
                     <el-date-picker
                       v-model="postForm.NextContact"
                       type="datetime"
-                      placeholder="选择日期时间">
-                    </el-date-picker>
+                      placeholder="选择日期时间"
+                    />
                   </el-form-item>
                 </el-col>
               </el-row>
@@ -67,7 +67,7 @@
             <div class="postInfo-container">
               <el-row>
                 <el-col :span="23">
-                  <el-form-item label-width="120px" label="备注:" >
+                  <el-form-item label-width="120px" label="备注:">
                     <el-input v-model="postForm.remarks" :rows="4" type="textarea" class="article-textarea" placeholder="请输入备注" />
                   </el-form-item>
                 </el-col>
@@ -95,19 +95,19 @@ const defaultForm = {
   status: 'draft',
   uuid: generateUUID(),
   userid: null,
-  customerId: null, 
-  DocumentaryContact: null, 
-  DocumentaryMode: null, 
-  DocumentaryProgress: null, 
-  NextContact: null, 
-  remarks: undefined,
+  customerId: null,
+  DocumentaryContact: null,
+  DocumentaryMode: null,
+  DocumentaryProgress: null,
+  NextContact: null,
+  remarks: undefined
 }
 const formLabel = {
   customerId: '公司名称',
   DocumentaryContact: '跟单联系人',
   DocumentaryMode: '跟单方式',
   DocumentaryProgress: '跟单进度',
-  NextContact: '下次联系',
+  NextContact: '下次联系'
 }
 
 export default {
@@ -155,35 +155,35 @@ export default {
         DocumentaryContact: [{ validator: validateRequire }],
         DocumentaryMode: [{ validator: validateRequire }],
         DocumentaryProgress: [{ validator: validateRequire }],
-        NextContact: [{ validator: validateRequire }],
+        NextContact: [{ validator: validateRequire }]
       },
       tempRoute: {},
       documentaryModeListOptions: [{
-          value: '1',
-          label: '电话沟通'
-        }, {
-          value: '2',
-          label: '上门拜访'
-        },
-        {
-          value: '3',
-          label: '微信QQ沟通'
-        }
+        value: '1',
+        label: '电话沟通'
+      }, {
+        value: '2',
+        label: '上门拜访'
+      },
+      {
+        value: '3',
+        label: '微信QQ沟通'
+      }
       ],
       DocumentaryProgress: [
-        {          
+        {
           value: '1',
           label: '结束跟单'
         },
-        {          
+        {
           value: '2',
           label: '初次沟通'
         },
-        {          
+        {
           value: '3',
           label: '有意向'
         },
-        {          
+        {
           value: '4',
           label: '考虑中'
         }
@@ -232,7 +232,7 @@ export default {
     },
     submitForm() {
       console.log(this.postForm);
-      this.postForm.NextContact = new Date(this.postForm.NextContact).getTime()/1000;
+      this.postForm.NextContact = new Date(this.postForm.NextContact).getTime() / 1000;
       this.$refs.postForm.validate(valid => {
         if (valid) {
           this.loading = true
@@ -276,7 +276,7 @@ export default {
         if (!response.data.items) return;
         this.customerListOptions = response.data.items;
       })
-    },
+    }
   }
 }
 </script>

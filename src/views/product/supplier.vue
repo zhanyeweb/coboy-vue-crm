@@ -30,7 +30,7 @@
       </el-table-column>
       <el-table-column width="180px" align="center" label="录入时间">
         <template slot-scope="scope">
-          <span><i class="el-icon-time"></i> {{ scope.row.inputtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+          <span><i class="el-icon-time" /> {{ scope.row.inputtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
       <el-table-column width="220px" align="center" label="操作">
@@ -49,8 +49,8 @@
           <el-input v-model="postForm.name" placeholder="供应商名称" />
         </el-form-item>
         <el-form-item label="合作情况：" prop="status">
-            <el-radio v-model="postForm.status" label="1">已合作</el-radio>
-            <el-radio v-model="postForm.status" label="2">未合作</el-radio>
+          <el-radio v-model="postForm.status" label="1">已合作</el-radio>
+          <el-radio v-model="postForm.status" label="2">未合作</el-radio>
         </el-form-item>
         <el-form-item label="联系人：" prop="liaison">
           <el-input v-model="postForm.liaison" placeholder="联系人" />
@@ -96,17 +96,17 @@ const formLabel = {
   liaison: '联系人'
 }
 export default {
-  name: 'supplier',
+  name: 'Supplier',
   components: { Pagination },
   data() {
     const validateRequire = (rule, value, callback) => {
-      console.log('value',value);
+      console.log('value', value);
       if (value === '' || value === null) {
         this.$message({
           message: formLabel[rule.field] + '为必传项',
           type: 'error'
         })
-        callback(new Error(formLabel[rule.field]  + '为必传项'))
+        callback(new Error(formLabel[rule.field] + '为必传项'))
       } else {
         callback()
       }
@@ -115,7 +115,7 @@ export default {
       postForm: Object.assign({}, defaultFormData),
       rules: {
         name: [{ validator: validateRequire }],
-        liaison: [{ validator: validateRequire }],
+        liaison: [{ validator: validateRequire }]
       },
       list: null,
       total: 0,
@@ -126,7 +126,7 @@ export default {
         token: null
       },
       dialogVisible: false,
-      dialogType: 'new',
+      dialogType: 'new'
     }
   },
   computed: {
@@ -167,7 +167,7 @@ export default {
         type: 'warning'
       })
         .then(async() => {
-          await delSupplier({id:row.id})
+          await delSupplier({ id: row.id })
           this.getList()
           this.$message({
             type: 'success',
@@ -177,7 +177,7 @@ export default {
         .catch(err => { console.error(err) })
     },
     confirmSupplier() {
-       this.$refs.postForm.validate(valid => {
+      this.$refs.postForm.validate(valid => {
         if (valid) {
           this.loading = true
           saveSupplier(this.postForm).then(response => {
@@ -199,7 +199,7 @@ export default {
           return false;
         }
       })
-    },
+    }
   }
 }
 </script>

@@ -8,7 +8,7 @@
       </el-table-column>
       <el-table-column min-width="150px" label="产品名称" fixed="left">
         <template slot-scope="{row}">
-            <span>{{ row.productName }}</span>
+          <span>{{ row.productName }}</span>
         </template>
       </el-table-column>
       <el-table-column width="80px" align="center" label="原有库存">
@@ -63,19 +63,19 @@
       </el-table-column>
       <el-table-column label="采购日期" width="150">
         <template slot-scope="scope">
-          <span>{{ scope.row.procurementDate | parseTime('{y}-{m}-{d}')}}</span>
+          <span>{{ scope.row.procurementDate | parseTime('{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
 
       <el-table-column width="180px" align="center" label="录入时间">
         <template slot-scope="scope">
-          <span><i class="el-icon-time"></i> {{ scope.row.inputtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+          <span><i class="el-icon-time" /> {{ scope.row.inputtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
 
       <el-table-column align="center" label="操作" width="200" fixed="right">
         <template slot-scope="scope">
-          <el-button type="danger" size="small" icon="el-icon-delete"  @click="onDel(scope.row.id)">
+          <el-button type="danger" size="small" icon="el-icon-delete" @click="onDel(scope.row.id)">
             删除
           </el-button>
         </template>
@@ -92,7 +92,7 @@ import { fetchPurchasesList, del } from '@/api/purchases'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 
 export default {
-  name: 'listPurchases',
+  name: 'ListPurchases',
   components: { Pagination },
   filters: {
     statusFilter(status) {
@@ -153,7 +153,7 @@ export default {
         this.$message({
           type: 'info',
           message: '已取消删除'
-        });          
+        });
       });
     }
   }

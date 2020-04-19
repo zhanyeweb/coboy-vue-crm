@@ -9,157 +9,158 @@
         </el-row>
 
         <div class="postInfo-container" style="margin-top: 20px;">
-            <el-row>
+          <el-row>
             <el-col :span="8">
-                <el-form-item label-width="120px" label="合同编号:" prop="ContractNumber" class="postInfo-container-item">
+              <el-form-item label-width="120px" label="合同编号:" prop="ContractNumber" class="postInfo-container-item">
                 <el-input v-model="postForm.ContractNumber" disabled :rows="1" type="text" class="article-input" autosize placeholder="请输入合同编号" />
-                </el-form-item>
+              </el-form-item>
             </el-col>
             <el-col :span="8">
-                <el-form-item label-width="120px" label="联系人:" prop="contact" class="postInfo-container-item">
+              <el-form-item label-width="120px" label="联系人:" prop="contact" class="postInfo-container-item">
                 <el-input v-model="postForm.contact" :rows="1" type="text" class="article-input" autosize placeholder="请输入联系人" />
-                </el-form-item>
+              </el-form-item>
             </el-col>
-            </el-row>
+          </el-row>
         </div>
 
-            <div class="postInfo-container">
-              <el-row>
-                <el-col :span="8">
-                  <el-form-item label-width="120px" label="开始日期:" prop="StartDate" class="postInfo-container-item">
-                    <el-date-picker
-                      v-model="postForm.StartDate"
-                      type="date"
-                      value-format="timestamp"
-                      placeholder="选择日期">
-                    </el-date-picker>
-                  </el-form-item>
-                </el-col>
+        <div class="postInfo-container">
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label-width="120px" label="开始日期:" prop="StartDate" class="postInfo-container-item">
+                <el-date-picker
+                  v-model="postForm.StartDate"
+                  type="date"
+                  value-format="timestamp"
+                  placeholder="选择日期"
+                />
+              </el-form-item>
+            </el-col>
 
-                <el-col :span="8">
-                  <el-form-item label-width="120px" label="结束日期:" prop="EndDate" class="postInfo-container-item">
-                    <el-date-picker
-                      v-model="postForm.EndDate"
-                      type="date"
-                      value-format="timestamp"
-                      placeholder="选择日期">
-                    </el-date-picker>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </div>
+            <el-col :span="8">
+              <el-form-item label-width="120px" label="结束日期:" prop="EndDate" class="postInfo-container-item">
+                <el-date-picker
+                  v-model="postForm.EndDate"
+                  type="date"
+                  value-format="timestamp"
+                  placeholder="选择日期"
+                />
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </div>
 
-            <div class="postInfo-container">
-              <el-row>
-                <el-col :span="8">
-                  <el-form-item label-width="120px" label="合同总金额:" prop="ContractAmount" class="postInfo-container-item">
-                    <el-input-number v-model="postForm.ContractAmount" :precision="2" :step="1" :max="999999999" placeholder="请输入合同总金额"></el-input-number>
-                  </el-form-item>
-                </el-col>
+        <div class="postInfo-container">
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label-width="120px" label="合同总金额:" prop="ContractAmount" class="postInfo-container-item">
+                <el-input-number v-model="postForm.ContractAmount" :precision="2" :step="1" :max="999999999" placeholder="请输入合同总金额" />
+              </el-form-item>
+            </el-col>
 
-                <el-col :span="8">
-                  <el-form-item label-width="120px" label="已收款:" prop="receivables" class="postInfo-container-item">
-                    <el-input-number v-model="postForm.receivables" :precision="2" :step="1" :max="999999999" placeholder="请输入已收款"></el-input-number>
-                  </el-form-item>
-                </el-col>
-                <el-col :span="8">
-                  <el-form-item label-width="120px" label="欠款:" class="postInfo-container-item">
-                    <el-input-number v-model="postForm.arrears" :precision="2" :step="1" :max="999999999" placeholder="请输入欠款"></el-input-number>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </div>
+            <el-col :span="8">
+              <el-form-item label-width="120px" label="已收款:" prop="receivables" class="postInfo-container-item">
+                <el-input-number v-model="postForm.receivables" :precision="2" :step="1" :max="999999999" placeholder="请输入已收款" />
+              </el-form-item>
+            </el-col>
+            <el-col :span="8">
+              <el-form-item label-width="120px" label="欠款:" class="postInfo-container-item">
+                <el-input-number v-model="postForm.arrears" :precision="2" :step="1" :max="999999999" placeholder="请输入欠款" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </div>
 
-            <div class="postInfo-container">
-              <el-row>
-                <el-col :span="8">
-                  <el-form-item label-width="120px" label="审核:" class="postInfo-container-item">
-                    <el-input v-model="postForm.ToExamine" :rows="1" type="text" class="article-input" autosize placeholder="请输入审核" />
-                  </el-form-item>
-                </el-col>
+        <div class="postInfo-container">
+          <el-row>
+            <el-col :span="8">
+              <el-form-item label-width="120px" label="审核:" class="postInfo-container-item">
+                <el-input v-model="postForm.ToExamine" :rows="1" type="text" class="article-input" autosize placeholder="请输入审核" />
+              </el-form-item>
+            </el-col>
 
-                <el-col :span="8">
-                  <el-form-item label-width="120px" label="操作员:" class="postInfo-container-item">
-                    <el-input v-model="postForm.operator" :rows="1" type="text" class="article-input" autosize placeholder="请输入操作员" />
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </div>
-            <div class="postInfo-container">
-              <el-row>
-                <el-col :span="23">
-                  <el-form-item label-width="120px" label="备注:" >
-                    <el-input v-model="postForm.remarks" :rows="4" type="textarea" class="article-textarea" placeholder="请输入备注" />
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </div>
-            <div class="postInfo-container">
-              <el-row>
-                <el-col :span="24">
-                  <el-form-item label-width="120px" label="附件:" >
-                    <el-upload
-                      class="upload-enclosures"
-                      action=""
-                      :show-file-list=false
-                      :limit="5"
-                      :http-request="uploadEnclosures">
-                      <el-button size="small" type="primary">点击上传</el-button>
-                      <div slot="tip" class="el-upload__tip">只能上传jpg,png,rar,doc,docx,xls,xlsx文件，且不超过2M，单次不能上传超过5个文件。</div>
-                    </el-upload>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-            </div>
-              <el-row>
-                <el-col :span="23">
-                  <el-form-item label-width="120px" label="" >
-                    <el-table :data="postForm.enclosures" type="index" border fit highlight-current-row style="width: 100%">
-                      <el-table-column align="center" label="描述" fixed="left">
-                        <template slot-scope="scope">
-                          <span>{{ scope.row.fileName }}</span>
-                        </template>
-                      </el-table-column>
-                      <el-table-column align="center" label="大小" width="100" fixed="left">
-                        <template slot-scope="scope">
-                          <span>{{ (scope.row.size/1024).toFixed(2) }} k</span>
-                        </template>
-                      </el-table-column>
-                      <el-table-column align="center" label="类型" width="100" fixed="left">
-                        <template slot-scope="scope">
-                          <span>{{ scope.row.file_extension }}</span>
-                        </template>
-                      </el-table-column>
-                      <el-table-column align="center" label="上传时间" width="150" fixed="left">
-                        <template slot-scope="scope">
-                          <span>{{ scope.row.inputtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
-                        </template>
-                      </el-table-column>
-                      <el-table-column align="center" label="下载" width="100" fixed="left">
-                        <template slot-scope="scope">
-                          <i class="el-icon-download" @click="downFile(scope.row.file,scope.row.fileName)" style="cursor:pointer;"/>
-                        </template>
-                      </el-table-column>
-                      <el-table-column align="center" label="操作" width="100" fixed="right">
-                        <template slot-scope="scope">
-                            <el-button type="danger" size="small" icon="el-icon-delete" @click="delEnclosures(scope.$index)">
-                              删除
-                            </el-button>
-                        </template>
-                      </el-table-column>
-                    </el-table>
-                  </el-form-item>
-                </el-col>
-              </el-row>
-              <el-row>
-                <el-col :span="21">   .
-                </el-col>
-                <el-col :span="3">        
-                  <el-button v-loading="loading" type="success" @click="submitForm">
-                    提交
-                  </el-button>
-                </el-col>
-              </el-row>
+            <el-col :span="8">
+              <el-form-item label-width="120px" label="操作员:" class="postInfo-container-item">
+                <el-input v-model="postForm.operator" :rows="1" type="text" class="article-input" autosize placeholder="请输入操作员" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </div>
+        <div class="postInfo-container">
+          <el-row>
+            <el-col :span="23">
+              <el-form-item label-width="120px" label="备注:">
+                <el-input v-model="postForm.remarks" :rows="4" type="textarea" class="article-textarea" placeholder="请输入备注" />
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </div>
+        <div class="postInfo-container">
+          <el-row>
+            <el-col :span="24">
+              <el-form-item label-width="120px" label="附件:">
+                <el-upload
+                  class="upload-enclosures"
+                  action=""
+                  :show-file-list="false"
+                  :limit="5"
+                  :http-request="uploadEnclosures"
+                >
+                  <el-button size="small" type="primary">点击上传</el-button>
+                  <div slot="tip" class="el-upload__tip">只能上传jpg,png,rar,doc,docx,xls,xlsx文件，且不超过2M，单次不能上传超过5个文件。</div>
+                </el-upload>
+              </el-form-item>
+            </el-col>
+          </el-row>
+        </div>
+        <el-row>
+          <el-col :span="23">
+            <el-form-item label-width="120px" label="">
+              <el-table :data="postForm.enclosures" type="index" border fit highlight-current-row style="width: 100%">
+                <el-table-column align="center" label="描述" fixed="left">
+                  <template slot-scope="scope">
+                    <span>{{ scope.row.fileName }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center" label="大小" width="100" fixed="left">
+                  <template slot-scope="scope">
+                    <span>{{ (scope.row.size/1024).toFixed(2) }} k</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center" label="类型" width="100" fixed="left">
+                  <template slot-scope="scope">
+                    <span>{{ scope.row.file_extension }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center" label="上传时间" width="150" fixed="left">
+                  <template slot-scope="scope">
+                    <span>{{ scope.row.inputtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+                  </template>
+                </el-table-column>
+                <el-table-column align="center" label="下载" width="100" fixed="left">
+                  <template slot-scope="scope">
+                    <i class="el-icon-download" style="cursor:pointer;" @click="downFile(scope.row.file,scope.row.fileName)" />
+                  </template>
+                </el-table-column>
+                <el-table-column align="center" label="操作" width="100" fixed="right">
+                  <template slot-scope="scope">
+                    <el-button type="danger" size="small" icon="el-icon-delete" @click="delEnclosures(scope.$index)">
+                      删除
+                    </el-button>
+                  </template>
+                </el-table-column>
+              </el-table>
+            </el-form-item>
+          </el-col>
+        </el-row>
+        <el-row>
+          <el-col :span="21">   .
+          </el-col>
+          <el-col :span="3">
+            <el-button v-loading="loading" type="success" @click="submitForm">
+              提交
+            </el-button>
+          </el-col>
+        </el-row>
       </div>
     </el-form>
   </div>
@@ -189,7 +190,7 @@ const defaultForm = {
   ToExamine: null,
   operator: null,
   remarks: null,
-  enclosures: [],
+  enclosures: []
 }
 const formLabel = {
   customerId: '公司名称',
@@ -215,11 +216,11 @@ export default {
     },
     customerId: {
       type: Number,
-      default: '' 
+      default: ''
     },
     customerUuid: {
       type: String,
-      default: '' 
+      default: ''
     },
     handleHideDialog: {
       type: Function,
@@ -278,11 +279,11 @@ export default {
     if (this.isEdit) {
       const uuid = this.$route.params && this.$route.params.uuid
       this.fetchData(uuid)
-    }else{
+    } else {
       this.postForm.uuid = generateUUID();
       this.postForm.ContractNumber = this.randomNumber();
     }
-    
+
     this.getUser();
   },
   methods: {
@@ -300,8 +301,8 @@ export default {
         this.postForm = response.data;
         this.postForm.StartDate = this.postForm.StartDate * 1000;
         this.postForm.EndDate = this.postForm.EndDate * 1000;
-        this.postForm.ContractAmount = this.postForm.ContractAmount/100;
-        this.postForm.receivables = this.postForm.receivables/100;
+        this.postForm.ContractAmount = this.postForm.ContractAmount / 100;
+        this.postForm.receivables = this.postForm.receivables / 100;
         // set tagsview title
         this.setTagsViewTitle()
 
@@ -322,8 +323,8 @@ export default {
     },
     submitForm() {
       this.postForm.customerId = this.customerId;
-      this.postForm.EndDate = new Date(this.postForm.EndDate).getTime()/1000;
-      this.postForm.StartDate = new Date(this.postForm.StartDate).getTime()/1000;
+      this.postForm.EndDate = new Date(this.postForm.EndDate).getTime() / 1000;
+      this.postForm.StartDate = new Date(this.postForm.StartDate).getTime() / 1000;
       console.log(this.postForm)
       this.$refs.postForm.validate(valid => {
         if (valid) {
@@ -371,62 +372,62 @@ export default {
         this.customerListOptions = response.data.items;
       })
     },
-    delEnclosures(index){
-        this.$confirm('此操作将删除该文件, 是否继续?', '提示', {
-          confirmButtonText: '确定',
-          cancelButtonText: '取消',
-          type: 'warning'
-        }).then(() => {
-          this.postForm.enclosures.splice(index,1);
-          this.$message({
-            type: 'success',
-            message: '删除成功!'
-          });
-        }).catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消删除'
-          });          
+    delEnclosures(index) {
+      this.$confirm('此操作将删除该文件, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        this.postForm.enclosures.splice(index, 1);
+        this.$message({
+          type: 'success',
+          message: '删除成功!'
         });
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
     },
-    uploadEnclosures(item){
+    uploadEnclosures(item) {
       const fileObj = item.file;
       // FormData 对象
       const form = new FormData();
       form.append('FILE_UPLOAD', fileObj);
       uploadEnclosures(form).then(response => {
-            this.postForm.enclosures.unshift(response.data);
-            console.log('response',response);
-            this.$notify({
-              title: '成功',
-              message: '操作成功',
-              type: 'success',
-              duration: 2000
-            });
-          }).catch(err => {
-            console.log(err);
+        this.postForm.enclosures.unshift(response.data);
+        console.log('response', response);
+        this.$notify({
+          title: '成功',
+          message: '操作成功',
+          type: 'success',
+          duration: 2000
+        });
+      }).catch(err => {
+        console.log(err);
       });
     },
     downFile(url, filename) {
-        // 创建隐藏的可下载链接
-        const eleLink = document.createElement('a');
-        eleLink.download = filename;
-        eleLink.style.display = 'none';
-        eleLink.href = url;
-        // 触发点击
-        document.body.appendChild(eleLink);
-        eleLink.click();
-        // 然后移除
-        document.body.removeChild(eleLink);
+      // 创建隐藏的可下载链接
+      const eleLink = document.createElement('a');
+      eleLink.download = filename;
+      eleLink.style.display = 'none';
+      eleLink.href = url;
+      // 触发点击
+      document.body.appendChild(eleLink);
+      eleLink.click();
+      // 然后移除
+      document.body.removeChild(eleLink);
     },
     // 根据当前时间和随机数生成流水号
     randomNumber() {
       const now = new Date()
-      let month = now.getMonth() + 1
-      let day = now.getDate()
-      let hour = now.getHours()
-      let minutes = now.getMinutes()
-      let seconds = now.getSeconds()
+      const month = now.getMonth() + 1
+      const day = now.getDate()
+      const hour = now.getHours()
+      const minutes = now.getMinutes()
+      const seconds = now.getSeconds()
       return now.getFullYear().toString() + month.toString() + day + hour + minutes + seconds + (Math.round(Math.random() * 89 + 100)).toString();
     }
   }

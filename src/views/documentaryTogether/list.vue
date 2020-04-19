@@ -17,7 +17,7 @@
 
       <el-table-column width="180px" align="center" label="录入时间">
         <template slot-scope="scope">
-          <span><i class="el-icon-time"></i> {{ scope.row.inputtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+          <span><i class="el-icon-time" /> {{ scope.row.inputtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
 
@@ -29,7 +29,7 @@
       <el-table-column width="150px" align="center" label="副业务员">
         <template slot-scope="scope">
           <span v-for="(item, index) in scope.row.subBusiness" :key="index">
-            {{item.FullName}}
+            {{ item.FullName }}
           </span>
         </template>
       </el-table-column>
@@ -158,7 +158,7 @@ export default {
         page: 0,
         rows: 99
       },
-      loading: false,
+      loading: false
     }
   },
   computed: {
@@ -180,7 +180,7 @@ export default {
         this.total = response.data.total;
         this.listLoading = false;
       })
-    },
+    }
   }
 }
 </script>

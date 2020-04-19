@@ -35,7 +35,7 @@
 
       <el-table-column width="180px" align="center" label="录入时间">
         <template slot-scope="scope">
-          <span><i class="el-icon-time"></i> {{ scope.row.inputtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+          <span><i class="el-icon-time" /> {{ scope.row.inputtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
 
@@ -46,7 +46,7 @@
               编辑
             </el-button>
           </router-link>
-          <el-button type="danger" size="small" icon="el-icon-delete"  @click="onDel(scope.row.id)">
+          <el-button type="danger" size="small" icon="el-icon-delete" @click="onDel(scope.row.id)">
             删除
           </el-button>
         </template>
@@ -124,7 +124,7 @@ export default {
         this.$message({
           type: 'info',
           message: '已取消删除'
-        });          
+        });
       });
     }
   }

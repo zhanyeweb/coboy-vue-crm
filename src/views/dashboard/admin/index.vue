@@ -1,10 +1,10 @@
 <template>
   <div class="dashboard-editor-container">
-    
-    <panel-group @handleSetLineChartData="handleSetLineChartData" :data="data" />
+
+    <panel-group :data="data" @handleSetLineChartData="handleSetLineChartData" />
 
     <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
-      <line-chart :chart-data="lineChartData" :dateData="dateData" :contractAmountChartData="contractAmountChartData" :receivablesChartData="receivablesChartData" />
+      <line-chart :chart-data="lineChartData" :date-data="dateData" :contract-amount-chart-data="contractAmountChartData" :receivables-chart-data="receivablesChartData" />
     </el-row>
 
     <el-row :gutter="32" style="display:none;">
@@ -74,60 +74,60 @@ export default {
       dateData: [],
       monthDateData: [],
       contractAmountChartData: [],
-      receivablesChartData: [],
+      receivablesChartData: []
     }
   },
   created() {
     const date = new Date();
-    const year = date.getFullYear() + "";
-    const month = (date.getMonth() + 1) + "";
-    // 本月最后一天日期    
-    const lastDateOfCurrentMonth = new Date(year,month,0);
+    const year = date.getFullYear() + '';
+    const month = (date.getMonth() + 1) + '';
+    // 本月最后一天日期
+    const lastDateOfCurrentMonth = new Date(year, month, 0);
     const lastDate = new Date(lastDateOfCurrentMonth).getDate();
-    
-    let dateData = [];
-    let monthDateData = [];
-    for(let i = 1; i <= lastDate; i ++){
+
+    const dateData = [];
+    const monthDateData = [];
+    for (let i = 1; i <= lastDate; i++) {
       const s = i < 10 ? '0' + i : i;
-      dateData.push( s );
+      dateData.push(s);
       monthDateData.push(month + '-' + s);
     }
-    this.dateData = dateData;;
+    this.dateData = dateData;
     this.monthDateData = monthDateData;
     this.fetchData();
   },
   methods: {
-    fetchData(){
+    fetchData() {
       fetchBi().then(response => {
         this.data = response.data;
 
         const moneyData = response.data.moneyData;
-        let contractAmountChartData = [];
-        let receivablesChartData = [];
+        const contractAmountChartData = [];
+        const receivablesChartData = [];
 
         this.monthDateData.map((v) => {
           let flag = true;
           moneyData && moneyData.map((o) => {
-            if( v === o.timestamp ){
+            if (v === o.timestamp) {
               // 应收款
-              contractAmountChartData.push(Number(o.ContractAmount)/100);
+              contractAmountChartData.push(Number(o.ContractAmount) / 100);
               // 实收款
-              receivablesChartData.push(Number(o.receivables)/100);
+              receivablesChartData.push(Number(o.receivables) / 100);
               flag = false;
             }
           });
-          if(flag){
+          if (flag) {
             contractAmountChartData.push(0);
             receivablesChartData.push(0);
-          } 
+          }
         });
 
-        const lineChartData= { contractAmountChartData, receivablesChartData };
+        const lineChartData = { contractAmountChartData, receivablesChartData };
         this.lineChartData = lineChartData;
       });
     },
     handleSetLineChartData(type) {
-      //this.lineChartData = lineChartData[type]
+      // this.lineChartData = lineChartData[type]
     }
   }
 }

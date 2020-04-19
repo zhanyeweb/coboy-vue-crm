@@ -1,7 +1,7 @@
 <template>
   <el-form :model="postForm">
     <el-form-item label="账号">
-      <el-input v-model.trim="postForm.username" :disabled="true"/>
+      <el-input v-model.trim="postForm.username" :disabled="true" />
     </el-form-item>
     <el-form-item label="姓名">
       <el-input v-model.trim="postForm.FullName" />
@@ -30,9 +30,9 @@ export default {
       }
     }
   },
-  data(){
-    return{
-      postForm: Object.assign({}, this.user),
+  data() {
+    return {
+      postForm: Object.assign({}, this.user)
     }
   },
   created() {

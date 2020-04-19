@@ -9,27 +9,27 @@
           </el-col>
         </el-row>
         <div class="postInfo-container">
-            <el-col :span="23">
+          <el-col :span="23">
             <el-form-item style="margin-top: 40px;margin-bottom: 40px;" label-width="100px" label="公司名称:" prop="CorporateName">
-                <div>{{postForm.CorporateName}}</div>
+              <div>{{ postForm.CorporateName }}</div>
             </el-form-item>
-            </el-col>
+          </el-col>
         </div>
         <div class="postInfo-container" style="margin-bottom: 20px;">
           <el-row>
             <el-col :span="8">
               <el-form-item label-width="120px" label="主要联系人:" class="postInfo-container-item" prop="PrimaryContact">
-                <div>{{postForm.PrimaryContact}}</div>
+                <div>{{ postForm.PrimaryContact }}</div>
               </el-form-item>
             </el-col>
             <el-col :span="8">
               <el-form-item label-width="120px" label="职位:" class="postInfo-container-item" prop="position">
-                <div>{{postForm.position}}</div>
+                <div>{{ postForm.position }}</div>
               </el-form-item>
             </el-col>
             <el-col :span="8">
               <el-form-item label-width="120px" label="电话:" class="postInfo-container-item" prop="tel">
-                <div>{{postForm.tel}}</div>
+                <div>{{ postForm.tel }}</div>
               </el-form-item>
             </el-col>
           </el-row>
@@ -38,17 +38,17 @@
           <el-row>
             <el-col :span="8">
               <el-form-item label-width="120px" label="国家:" class="postInfo-container-item">
-                <div>{{postForm.country}}</div>
+                <div>{{ postForm.country }}</div>
               </el-form-item>
             </el-col>
             <el-col :span="8">
               <el-form-item label-width="120px" label="邮箱:" class="postInfo-container-item">
-                <div>{{postForm.email}}</div>
+                <div>{{ postForm.email }}</div>
               </el-form-item>
             </el-col>
             <el-col :span="8">
               <el-form-item label-width="120px" label="客户信息来源:" class="postInfo-container-item">
-                <div>{{postForm.CustomerSource}}</div>
+                <div>{{ postForm.CustomerSource }}</div>
               </el-form-item>
             </el-col>
           </el-row>
@@ -58,31 +58,31 @@
           <el-row>
             <el-col :span="8">
               <el-form-item label-width="120px" label="展厅数量:" class="postInfo-container-item">
-                <div>{{postForm.NumberOfExhibitionHalls}}</div>
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label-width="120px" label="联系进度:" class="postInfo-container-item">
-                <div>{{postForm.ContactProgress}}</div>
+                <div>{{ postForm.NumberOfExhibitionHalls }}</div>
               </el-form-item>
             </el-col>
           </el-row>
         </div>
 
         <el-form-item label-width="100px" label="地址:" style="margin-bottom: 20px;">
-          <div>{{postForm.address}}</div>
+          <div>{{ postForm.address }}</div>
         </el-form-item>
 
-        <el-form-item style="margin-bottom: 20px;" label-width="100px" label="网站:" >
-          <div>{{postForm.website}}</div>
+        <el-form-item style="margin-bottom: 20px;" label-width="100px" label="网站:">
+          <div>{{ postForm.website }}</div>
         </el-form-item>
 
-        <el-form-item style="margin-bottom: 20px;" label-width="100px" label="主营产品:" >
-          <div>{{postForm.MainProducts}}</div>
+        <el-form-item style="margin-bottom: 20px;" label-width="100px" label="主营产品:">
+          <div>{{ postForm.MainProducts }}</div>
         </el-form-item>
         <el-col :span="23">
+          <el-form-item style="margin-bottom: 20px;" label-width="100px" label="联系进度:">
+            <div>{{ postForm.ContactProgress }}</div>
+          </el-form-item>
+        </el-col>
+        <el-col :span="23">
           <el-form-item style="margin-bottom: 20px;" label-width="100px" label="备注:">
-            <div>{{postForm.remarks}}</div>
+            <div>{{ postForm.remarks }}</div>
           </el-form-item>
         </el-col>
       </div>
@@ -144,13 +144,13 @@ export default {
   },
   data() {
     const validateRequire = (rule, value, callback) => {
-      console.log('value',value);
+      console.log('value', value);
       if (value === '' || value === null) {
         this.$message({
           message: formLabel[rule.field] + '为必传项',
           type: 'error'
         })
-        callback(new Error(formLabel[rule.field]  + '为必传项'))
+        callback(new Error(formLabel[rule.field] + '为必传项'))
       } else {
         callback()
       }
@@ -178,7 +178,7 @@ export default {
         CorporateName: [{ validator: validateRequire }],
         PrimaryContact: [{ validator: validateRequire }],
         position: [{ validator: validateRequire }],
-        tel: [{ validator: validateRequire }],
+        tel: [{ validator: validateRequire }]
       },
       tempRoute: {},
       departData: [],
@@ -268,37 +268,37 @@ export default {
         this.userListOptions = response.data.items.map(v => v.name)
       })
     },
-    uploadExcel(item){
+    uploadExcel(item) {
       const fileObj = item.file;
       // FormData 对象
       const form = new FormData();
       form.append('FILE_UPLOAD', fileObj);
       form.append('type', 1);
       uploadExcel(form).then(response => {
-            this.$notify({
-              title: '成功',
-              message: '操作成功',
-              type: 'success',
-              duration: 2000
-            });
-            this.loading = false;
-            this.$router.push({path:'/high-seas-customer/mylist'})
-          }).catch(err => {
-            this.loading = false;
-            console.log(err);
+        this.$notify({
+          title: '成功',
+          message: '操作成功',
+          type: 'success',
+          duration: 2000
+        });
+        this.loading = false;
+        this.$router.push({ path: '/high-seas-customer/mylist' })
+      }).catch(err => {
+        this.loading = false;
+        console.log(err);
       });
     },
     downFile(url, filename) {
-        // 创建隐藏的可下载链接
-        const eleLink = document.createElement('a');
-        eleLink.download = filename;
-        eleLink.style.display = 'none';
-        eleLink.href = url;
-        // 触发点击
-        document.body.appendChild(eleLink);
-        eleLink.click();
-        // 然后移除
-        document.body.removeChild(eleLink);
+      // 创建隐藏的可下载链接
+      const eleLink = document.createElement('a');
+      eleLink.download = filename;
+      eleLink.style.display = 'none';
+      eleLink.href = url;
+      // 触发点击
+      document.body.appendChild(eleLink);
+      eleLink.click();
+      // 然后移除
+      document.body.removeChild(eleLink);
     }
   }
 }

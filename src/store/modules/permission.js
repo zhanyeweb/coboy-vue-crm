@@ -34,7 +34,6 @@ export function filterAsyncRoutes(routes, roles) {
   return res
 }
 
-
 /**
  * Filter asynchronous routing tables by recursion
  * @param routes asyncRoutes
@@ -42,12 +41,12 @@ export function filterAsyncRoutes(routes, roles) {
  */
 export function myFilterAsyncRoutes(routes, roles) {
   const res = []
-  
+
   routes.forEach((route) => {
     const tmp = { ...route };
-    //tmp.children = route.children;
+    // tmp.children = route.children;
     roles.map(o => {
-      if(o.meta.title === tmp.meta.title){
+      if (o.meta.title === tmp.meta.title) {
         if (tmp.children) {
           tmp.children = myFilterAsyncRoutes(tmp.children, o.children)
         }
@@ -93,12 +92,11 @@ const actions = {
   },
   analysisRoutes({ commit }, routes) {
     return new Promise(resolve => {
-      
       let accessedRoutes;
       accessedRoutes = myFilterAsyncRoutes(asyncRoutes, routes);
-      
+
       commit('SET_ROUTES', accessedRoutes)
-      
+
       resolve(accessedRoutes)
     })
   }

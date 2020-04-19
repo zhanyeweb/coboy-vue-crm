@@ -31,42 +31,43 @@
           <el-input v-model="postForm.FullName" :rows="1" type="text" class="article-input" autosize placeholder="请输入姓名" />
         </el-form-item>
 
-        <el-form-item style="margin-bottom: 40px;" label-width="100px" label="性别:" >
+        <el-form-item style="margin-bottom: 40px;" label-width="100px" label="性别:">
           <el-radio v-model="postForm.sex" label="1">男生</el-radio>
           <el-radio v-model="postForm.sex" label="2">女生</el-radio>
         </el-form-item>
 
         <el-form-item style="margin-bottom: 40px;display:none;" label-width="100px" label="所在部门:" prop="departmentUuid">
-            <el-select v-model="postForm.departmentUuid" placeholder="请选择">
-              <template v-for="group in departData">
+          <el-select v-model="postForm.departmentUuid" placeholder="请选择">
+            <template v-for="group in departData">
               <el-option-group
                 v-if="group.children.length > 0"
                 :key="group.uuid"
-                :label="group.departmentName">
+                :label="group.departmentName"
+              >
                 <el-option
                   v-for="item in group.children"
                   :key="item.uuid"
                   :label="item.departmentName"
-                  :value="item.uuid">
-                </el-option>
+                  :value="item.uuid"
+                />
               </el-option-group>
-                <el-option
-                  v-else
-                  :key="group.uuid"
-                  :label="group.departmentName"
-                  :value="group.uuid">
-                </el-option>
-              </template>
-            </el-select>
+              <el-option
+                v-else
+                :key="group.uuid"
+                :label="group.departmentName"
+                :value="group.uuid"
+              />
+            </template>
+          </el-select>
         </el-form-item>
         <el-form-item style="margin-bottom: 40px;" label-width="100px" label="角色/ 职位:" prop="rolesId">
           <el-select v-model="postForm.rolesId" placeholder="请选择">
             <el-option
-               v-for="item in rolesList"
+              v-for="item in rolesList"
               :key="item.id"
               :label="item.name"
-              :value="item.id">
-            </el-option>
+              :value="item.id"
+            />
           </el-select>
         </el-form-item>
 
@@ -76,6 +77,14 @@
 
         <el-form-item style="margin-bottom: 40px;" label-width="100px" label="Email:">
           <el-input v-model="postForm.email" :rows="1" type="text" class="article-input" autosize placeholder="请输入Email" />
+        </el-form-item>
+
+        <el-form-item style="margin-bottom: 40px;" label-width="100px" label="生日:">
+          <el-date-picker
+            v-model="postForm.birthday"
+            type="date"
+            placeholder="选择日期">
+          </el-date-picker>
         </el-form-item>
 
         <el-form-item style="margin-bottom: 40px;" label-width="100px" label="籍贯:">
@@ -112,6 +121,7 @@ const defaultForm = {
   rolesId: null,
   mobile: null,
   email: null,
+  birthday: null,
   NativePlace: null,
   remarks: null
 }
@@ -125,6 +135,7 @@ const formLabel = {
   rolesId: '角色/ 职位',
   mobile: '手机号码',
   email: 'Email',
+  birthday: '生日',
   NativePlace: '籍贯',
   remarks: '备注'
 }
@@ -145,7 +156,7 @@ export default {
           message: formLabel[rule.field] + '为必传项',
           type: 'error'
         })
-        callback(new Error(formLabel[rule.field]  + '为必传项'))
+        callback(new Error(formLabel[rule.field] + '为必传项'))
       } else {
         callback()
       }
@@ -212,7 +223,6 @@ export default {
     getDepartmentList() {
       this.listLoading = true
       fetchDepartmentList(this.listDepartQuery).then(response => {
-        
         const data = response.data;
         const _f = (puuid, item) => {
           item = item && item.filter(it => it.puuid === puuid);
@@ -220,11 +230,11 @@ export default {
             const childData = _f(v.uuid, data);
             v.children = childData;
           });
-          
+
           return item;
         };
         const treeData = _f('0', data);
-        
+
         this.departData = treeData;
         this.listLoading = false
       })
@@ -254,7 +264,8 @@ export default {
     submitForm() {
       this.$refs.postForm.validate(valid => {
         if (valid) {
-          this.loading = true
+          this.loading = true;
+          this.postForm.birthday = new Date(this.postForm.birthday).getTime() / 1000;
           saveStaff(this.postForm).then(response => {
             this.$notify({
               title: '成功',
@@ -263,7 +274,7 @@ export default {
               duration: 2000
             });
             this.loading = false;
-            this.$router.push({path:'/staff/list'});
+            this.$router.push({ path: '/staff/list' });
           }).catch(err => {
             console.log(err);
           });

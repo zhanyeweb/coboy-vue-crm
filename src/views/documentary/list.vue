@@ -35,7 +35,7 @@
 
       <el-table-column label="下次联系" width="180">
         <template slot-scope="{row}">
-          <span><i class="el-icon-time"></i> {{ row.NextContact | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+          <span><i class="el-icon-time" /> {{ row.NextContact | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
 
@@ -47,7 +47,7 @@
 
       <el-table-column label="录入时间" width="180">
         <template slot-scope="scope">
-          <span><i class="el-icon-time"></i> {{ scope.row.inputtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+          <span><i class="el-icon-time" /> {{ scope.row.inputtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
 
@@ -106,31 +106,31 @@ export default {
         this.listLoading = false;
       })
     },
-    formatterDocumentaryMode(key){
-      switch(Number(key)){
-        case 1:{
+    formatterDocumentaryMode(key) {
+      switch (Number(key)) {
+        case 1: {
           return '电话沟通';
         }
-        case 2:{
+        case 2: {
           return '上门拜访';
         }
-        case 3:{
+        case 3: {
           return '微信QQ沟通';
         }
       }
     },
-    formatterDocumentaryProgress(key){
-      switch(Number(key)){
-        case 1:{
+    formatterDocumentaryProgress(key) {
+      switch (Number(key)) {
+        case 1: {
           return '结束跟单';
         }
-        case 2:{
+        case 2: {
           return '初次沟通';
         }
-        case 3:{
+        case 3: {
           return '有意向';
         }
-        case 4:{
+        case 4: {
           return '考虑中';
         }
       }

@@ -13,7 +13,7 @@
       </el-table-column>
       <el-table-column min-width="250px" label="公司名称" fixed="left">
         <template slot-scope="{row}">
-            <span>{{ row.CorporateName }}</span>
+          <span>{{ row.CorporateName }}</span>
         </template>
       </el-table-column>
 
@@ -25,13 +25,13 @@
 
       <el-table-column width="180px" align="center" label="下单日期">
         <template slot-scope="scope">
-          <span><i class="el-icon-time"></i> {{ scope.row.OrderDate | parseTime('{y}-{m}-{d}') }}</span>
+          <span><i class="el-icon-time" /> {{ scope.row.OrderDate | parseTime('{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
 
       <el-table-column width="180px" align="center" label="交单日期">
         <template slot-scope="scope">
-          <span><i class="el-icon-time"></i> {{ scope.row.PresentationDate | parseTime('{y}-{m}-{d}') }}</span>
+          <span><i class="el-icon-time" /> {{ scope.row.PresentationDate | parseTime('{y}-{m}-{d}') }}</span>
         </template>
       </el-table-column>
 
@@ -61,7 +61,7 @@
 
       <el-table-column width="180px" align="center" label="录入时间">
         <template slot-scope="scope">
-          <span><i class="el-icon-time"></i> {{ scope.row.inputtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+          <span><i class="el-icon-time" /> {{ scope.row.inputtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
 
@@ -79,15 +79,15 @@
 
       <el-table-column align="center" label="操作" width="300" fixed="right">
         <template slot-scope="scope">
-            <el-button type="success" size="small" icon="el-icon-view" @click="onViewProduct(scope.row.uuid)">
-              查看商品
-            </el-button>
+          <el-button type="success" size="small" icon="el-icon-view" @click="onViewProduct(scope.row.uuid)">
+            查看商品
+          </el-button>
           <router-link :to="'/order/edit/'+scope.row.uuid">
             <el-button type="primary" size="small" icon="el-icon-edit">
               编辑
             </el-button>
           </router-link>
-          <el-button type="danger" size="small" icon="el-icon-delete"  @click="onDel(scope.row.id)">
+          <el-button type="danger" size="small" icon="el-icon-delete" @click="onDel(scope.row.id)">
             删除
           </el-button>
         </template>
@@ -97,45 +97,43 @@
     <pagination v-show="total>0" :total="total" :page.sync="listQuery.page" :limit.sync="listQuery.rows" @pagination="getList" />
     <el-dialog :visible.sync="productDialogVisible" :title="'订单商品'" width="1000px">
       <el-table :data="productList" type="index" border fit highlight-current-row style="width: 100%">
-        <el-table-column align="center" label="序号" type="index" width="100" fixed="left">
-
-        </el-table-column>
+        <el-table-column align="center" label="序号" type="index" width="100" fixed="left" />
         <el-table-column align="center" label="商品名称" fixed="left">
           <template slot-scope="scope">
             <span>{{ scope.row.productName }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="成本价" width="100" >
+        <el-table-column align="center" label="成本价" width="100">
           <template slot-scope="scope">
-            <span>{{ (scope.row.costPrice)}}</span>
+            <span>{{ (scope.row.costPrice) }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="售价" width="100" >
+        <el-table-column align="center" label="售价" width="100">
           <template slot-scope="scope">
-            <span>{{scope.row.sellingPrice}}</span>
+            <span>{{ scope.row.sellingPrice }}</span>
           </template>
         </el-table-column>
-        <el-table-column align="center" label="数量" width="100" >
+        <el-table-column align="center" label="数量" width="100">
           <template slot-scope="scope">
-            {{scope.row.num}}
+            {{ scope.row.num }}
           </template>
         </el-table-column>
-        <el-table-column align="center" label="折扣" width="100" >
+        <el-table-column align="center" label="折扣" width="100">
           <template slot-scope="scope">
-            {{scope.row.discount}}
+            {{ scope.row.discount }}
           </template>
         </el-table-column>
-        <el-table-column align="center" label="商品总金额" width="100" >
+        <el-table-column align="center" label="商品总金额" width="100">
           <template slot-scope="scope">
-            {{scope.row.totalSum}}
+            {{ scope.row.totalSum }}
           </template>
         </el-table-column>
-        <el-table-column align="center" label="备注" width="100" >
+        <el-table-column align="center" label="备注" width="100">
           <template slot-scope="scope">
-            {{scope.row.info}}
+            {{ scope.row.info }}
           </template>
         </el-table-column>
-        <el-table-column align="center" label="录入时间" width="100" >
+        <el-table-column align="center" label="录入时间" width="100">
           <template slot-scope="scope">
             <span>{{ scope.row.inputtime | parseTime('{y}-{m}-{d}') }}</span>
           </template>
@@ -179,7 +177,7 @@ export default {
         rows: 20,
         uuid: undefined
       },
-      productDialogVisible: false,
+      productDialogVisible: false
     }
   },
   created() {
@@ -212,12 +210,12 @@ export default {
         this.$message({
           type: 'info',
           message: '已取消删除'
-        });          
+        });
       });
     },
-    onViewProduct(uuid){
+    onViewProduct(uuid) {
       this.productDialogVisible = true;
-      viewProduct({...this.listViewProductQuery, uuid}).then(response => {
+      viewProduct({ ...this.listViewProductQuery, uuid }).then(response => {
         this.productList = response.data.items
         this.productTotal = response.data.total
         this.productListLoading = false

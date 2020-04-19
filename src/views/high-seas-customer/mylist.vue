@@ -18,7 +18,7 @@
 
       <el-table-column width="180px" align="center" label="录入时间">
         <template slot-scope="scope">
-          <span><i class="el-icon-time"></i> {{ scope.row.inputtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+          <span><i class="el-icon-time" /> {{ scope.row.inputtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
 
@@ -108,9 +108,9 @@
               编辑
             </el-button>
           </router-link>
-            <el-button type="danger" size="small" icon="el-icon-delete" @click="onDel(scope.row.id)">
-              删除
-            </el-button>
+          <el-button type="danger" size="small" icon="el-icon-delete" @click="onDel(scope.row.id)">
+            删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -188,7 +188,7 @@ export default {
         this.$message({
           type: 'info',
           message: '已取消保护'
-        });          
+        });
       });
     },
     onDel(id) {
@@ -208,12 +208,12 @@ export default {
         this.$message({
           type: 'info',
           message: '已取消删除'
-        });          
+        });
       });
     },
-    onSearch(data){
+    onSearch(data) {
       this.listLoading = true;
-      fetchCustomerList({...this.listQuery, ...data}).then(response => {
+      fetchCustomerList({ ...this.listQuery, ...data }).then(response => {
         this.list = response.data.items;
         this.total = response.data.total;
         this.listLoading = false;

@@ -17,7 +17,7 @@
 
       <el-table-column width="180px" align="center" label="录入时间">
         <template slot-scope="scope">
-          <span><i class="el-icon-time"></i> {{ scope.row.inputtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+          <span><i class="el-icon-time" /> {{ scope.row.inputtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
         </template>
       </el-table-column>
 
@@ -192,9 +192,9 @@ export default {
         this.$message({
           type: 'info',
           message: '已取消移出'
-        });          
+        });
       });
-    },
+    }
   }
 }
 </script>
