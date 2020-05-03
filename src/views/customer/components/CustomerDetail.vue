@@ -459,7 +459,7 @@ export default {
           });
           const _this = this;
           const messageTxt = notImportInfo.length > 0 ? 
-          '<h5>导入条数：' + importCount + '</h5><h5>存在重复相似数据：</h5>' + html 
+          '<h5>导入条数：' + importCount + '</h5><h5>系统已经存在相似数据：</h5>' + html 
            : '导入成功';
           this.$notify({
             title: '系统提示：',

@@ -56,6 +56,14 @@ export default {
         });
         return;
       }
+      if (!this.postForm.password.length < 6) {
+        this.$message({
+          message: '密码的长度不能少于六位',
+          type: 'error',
+          duration: 5 * 1000
+        });
+        return;
+      }
       if (this.postForm.password !== this.postForm.notPassword) {
         this.$message({
           message: '密码和确认密码不相等',
