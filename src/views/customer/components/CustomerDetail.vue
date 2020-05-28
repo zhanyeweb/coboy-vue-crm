@@ -306,8 +306,7 @@ export default {
       loading: false,
       userListOptions: [],
       rules: {
-        CorporateName: [{ validator: validateRequire }],
-        PrimaryContact: [{ validator: validateRequire }],
+        CorporateName: [{ validator: validateRequire }]
       },
       tempRoute: {},
       departData: [],
@@ -455,11 +454,11 @@ export default {
           const { importCount, notImportInfo } = response.data;
           let html = '';
           notImportInfo.map((o, i) => {
-            html += '<p>'+(i + 1)+'. '+ o +'</p>';
+            html += '<p>'+(i + 1)+'. '+ o.CorporateName + ' [所有者：'+ o.FullName +']</p>';
           });
           const _this = this;
           const messageTxt = notImportInfo.length > 0 ? 
-          '<h5>导入条数：' + importCount + '</h5><h5>系统已经存在相似数据：</h5>' + html 
+          '<h5>导入条数：' + importCount + '</h5><h5>系统已经存在以下数据：</h5>' + html 
            : '导入成功';
           this.$notify({
             title: '系统提示：',

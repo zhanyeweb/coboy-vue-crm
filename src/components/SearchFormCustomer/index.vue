@@ -1,6 +1,6 @@
 <template>
   <el-form :inline="true" :model="formSearch" class="demo-form-inline">
-    <el-form-item label="主业务员">
+    <el-form-item label="主业务员" v-if="isAccess">
       <el-select v-model="formSearch.userid" clearable placeholder="选择主业务员">
         <el-option
           v-for="item in staffList"
@@ -16,6 +16,9 @@
     <el-form-item label="国家">
       <el-input v-model="formSearch.country" placeholder="请填写国家名称" />
     </el-form-item>
+    <el-form-item label="公司Email">
+      <el-input v-model="formSearch.email" placeholder="请填写公司Email" />
+    </el-form-item>
     <el-form-item>
       <el-button type="primary" @click="onSubmit">查询</el-button>
     </el-form-item>
@@ -26,12 +29,17 @@
 </template>
 
 <script>
+import { mapGetters } from 'vuex'
 import { fetchList } from '@/api/staff'
 
 export default {
   name: 'SearchFormCustomer',
   props: {
     onSearch: {
+      type: Function,
+      default: () => {}
+    },
+    setListQuery: {
       type: Function,
       default: () => {}
     }
@@ -41,7 +49,8 @@ export default {
       formSearch: {
         userid: '',
         CorporateName: '',
-        country: ''
+        country: '',
+        email: '',
       },
       staffList: null,
       staffTotal: 0,
@@ -50,6 +59,21 @@ export default {
         page: 0,
         rows: 999
       }
+    }
+  },
+  computed: {
+    ...mapGetters([
+      'name',
+      'userid',
+      'token',
+      'permission'
+    ]),
+    isAccess: function() {
+      let permission = [];
+      if (this.permission) {
+        permission = this.permission.split(',');
+      }
+      return permission.includes(this.userid);
     }
   },
   created() {
@@ -71,8 +95,12 @@ export default {
       this.formSearch.userid = '';
       this.formSearch.CorporateName = '';
       this.formSearch.country = '';
-      this.$emit('onSearch', {});
+      this.formSearch.email = '';
+      this.$emit('onSearch', this.formSearch);
     }
+  },
+  watch:{
+
   }
 }
 </script>

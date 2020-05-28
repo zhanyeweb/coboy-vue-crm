@@ -4,13 +4,68 @@
     <SearchFormCustomer @onSearch="onSearch" />
 
     <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
-      <el-table-column align="center" label="编号" width="80" fixed="left">
+    <el-table-column type="expand" >
+      <template slot-scope="props">
+        <el-form label-position="left" inline class="table-expand" v-if="isUserAccess(props.row.userid)">
+          <el-form-item label="公司名称">
+            <span>{{ props.row.CorporateName }}</span>
+          </el-form-item>
+          <el-form-item label="编号">
+            <span>{{ props.row.id }}</span>
+          </el-form-item>
+          <el-form-item label="录入时间">
+            <span>{{ props.row.inputtime | parseTime('{y}-{m}-{d} {h}:{i}') }}</span>
+          </el-form-item>
+          <el-form-item label="主业务员">
+            <span>{{ props.row.FullName }}</span>
+          </el-form-item>
+          <el-form-item label="国家">
+            <span>{{ props.row.country }}</span>
+          </el-form-item>
+          <el-form-item label="主要联系人">
+            <span>{{ props.row.PrimaryContact }}</span>
+          </el-form-item>
+          <el-form-item label="职位">
+            <span>{{ props.row.position }}</span>
+          </el-form-item>
+          <el-form-item label="邮箱">
+            <span>{{ props.row.email }}</span>
+          </el-form-item>
+          <el-form-item label="电话">
+            <span>{{ props.row.tel }}</span>
+          </el-form-item>
+          <el-form-item label="地址">
+            <span>{{ props.row.address }}</span>
+          </el-form-item>
+          <el-form-item label="网站">
+            <span>{{ props.row.website }}</span>
+          </el-form-item>
+          <el-form-item label="主营产品">
+            <span>{{ props.row.MainProducts }}</span>
+          </el-form-item>
+          <el-form-item label="展厅数量">
+            <span>{{ props.row.NumberOfExhibitionHalls }}</span>
+          </el-form-item>
+          <el-form-item label="客户信息来源">
+            <span>{{ props.row.CustomerSource }}</span>
+          </el-form-item>
+          <el-form-item label="备注">
+            <span>{{ props.row.remarks }}</span>
+          </el-form-item>
+          <el-form-item label="联系进度">
+            <span>{{ props.row.ContactProgress }}</span>
+          </el-form-item>
+        </el-form>
+      </template>
+    </el-table-column>
+
+      <el-table-column align="center" label="编号" width="80">
         <template slot-scope="scope">
           <span>{{ scope.row.id }}</span>
         </template>
       </el-table-column>
 
-      <el-table-column min-width="300px" label="公司名称" fixed="left">
+      <el-table-column min-width="300px" label="公司名称">
         <template slot-scope="{row}">
           <router-link :to="'/customer/edit/'+row.uuid" class="link-type">
             <span>{{ row.CorporateName }}</span>
@@ -44,74 +99,8 @@
         </template>
       </el-table-column>
 
-      <el-table-column label="主要联系人" width="110">
-        <template slot-scope="{row}">
-          <span>{{ row.PrimaryContact }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="职位" width="110">
-        <template slot-scope="scope">
-          <span>{{ scope.row.position }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="邮箱" width="110">
-        <template slot-scope="scope">
-          <span>{{ scope.row.email }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="电话" width="110">
-        <template slot-scope="scope">
-          <span>{{ scope.row.tel }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="地址" width="110">
-        <template slot-scope="scope">
-          <span>{{ scope.row.address }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="网站" width="110">
-        <template slot-scope="scope">
-          <span>{{ scope.row.website }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="主营产品" width="110">
-        <template slot-scope="scope">
-          <span>{{ scope.row.MainProducts }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="展厅数量" width="110">
-        <template slot-scope="scope">
-          <span>{{ scope.row.NumberOfExhibitionHalls }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="客户信息来源" width="110">
-        <template slot-scope="scope">
-          <span>{{ scope.row.CustomerSource }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="备注" width="280">
-        <template slot-scope="scope">
-          <span>{{ scope.row.remarks }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column label="联系进度" width="280">
-        <template slot-scope="scope">
-          <span>{{ scope.row.ContactProgress }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column align="center" label="操作" width="280" fixed="right">
-        <template slot-scope="scope">
+      <el-table-column align="center" label="操作" width="380" fixed="right">
+        <template slot-scope="scope"  v-if="isUserAccess(scope.row.userid)">
           <router-link :to="'/customer/documentary/'+scope.row.uuid">
             <el-button type="primary" size="small" icon="el-icon-tickets">
               跟单
@@ -125,6 +114,9 @@
           <el-tooltip class="item" effect="dark" content="将该客户移到公海" placement="top">
             <el-button type="warning" size="small" icon="el-icon-sold-out" @click="removeProtect(scope.row.id)">移出</el-button>
           </el-tooltip>
+          <el-button v-if="isAccess" type="danger" size="small" icon="el-icon-delete" @click="onDel(scope.row.id)">
+            删除
+          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -149,7 +141,8 @@
 
 <script>
 import { mapGetters } from 'vuex'
-import { fetchCustomerList, protect, followUpOrderId, saveFollowUpOrderId } from '@/api/customer'
+import { deepClone } from '@/utils'
+import { fetchCustomerList, protect, followUpOrderId, saveFollowUpOrderId, realDel } from '@/api/customer'
 import { fetchList as fetchUserList } from '@/api/staff'
 import Pagination from '@/components/Pagination' // Secondary package based on el-pagination
 import SearchFormCustomer from '@/components/SearchFormCustomer'
@@ -175,8 +168,7 @@ export default {
       listQuery: {
         type: 2, // 客户类型：1，公海客户，2，我的客户，3，保护期客户
         page: 1,
-        rows: 10,
-        token: null
+        rows: 10
       },
       dialogVisible: false,
       followUpOrderIds: [],
@@ -209,6 +201,18 @@ export default {
     this.fetchUserList();
   },
   methods: {
+    isUserAccess(userid){
+      if(userid !== this.userid){
+        let permission = [];
+        if (this.permission) {
+          permission = this.permission.split(',');
+        }
+        return permission.includes(this.userid);
+      }else{
+        return true;
+      }
+
+    },
     fetchUserList() {
       fetchUserList(this.listUserQuery).then(response => {
         this.userList = response.data.items.filter(o => o.userid != 1);
@@ -272,12 +276,33 @@ export default {
     },
     onSearch(data) {
       this.listLoading = true;
-      fetchCustomerList({ ...this.listQuery, ...data }).then(response => {
+      this.listQuery = deepClone({ ...this.listQuery, ...data });
+      fetchCustomerList(this.listQuery).then(response => {
         this.list = response.data.items;
         this.total = response.data.total;
         this.listLoading = false;
       })
-    }
+    },
+    onDel(id) {
+      this.$confirm('此操作将删除该客户, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        realDel(id).then(response => {
+          this.$message({
+            type: 'success',
+            message: '删除成功!'
+          });
+          this.getList();
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        });
+      });
+    },
   }
 }
 </script>
@@ -290,5 +315,10 @@ export default {
   position: absolute;
   right: 15px;
   top: 10px;
+}
+.table-expand .el-form-item {
+  margin-right: 0;
+  margin-bottom: 0;
+  width: 48%;
 }
 </style>

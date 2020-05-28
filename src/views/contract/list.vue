@@ -1,29 +1,16 @@
 <template>
   <div class="app-container">
     <el-table v-loading="listLoading" :data="list" border fit highlight-current-row style="width: 100%">
-      <el-table-column align="center" label="编号" width="80" fixed="left">
+      <el-table-column width="160px" align="center" label="合同编号" fixed="left">
         <template slot-scope="scope">
-          <span>{{ scope.row.id }}</span>
+          <span>{{ scope.row.ContractNumber }}</span>
         </template>
       </el-table-column>
-
       <el-table-column min-width="300px" label="公司名称" fixed="left">
         <template slot-scope="{row}">
           <router-link :to="'/contract/edit/'+row.uuid" class="link-type">
             <span>{{ row.CorporateName }}</span>
           </router-link>
-        </template>
-      </el-table-column>
-
-      <el-table-column width="120px" align="center" label="联系人">
-        <template slot-scope="scope">
-          <span>{{ scope.row.contact }}</span>
-        </template>
-      </el-table-column>
-
-      <el-table-column width="120px" align="center" label="合同编号">
-        <template slot-scope="scope">
-          <span>{{ scope.row.ContractNumber }}</span>
         </template>
       </el-table-column>
 

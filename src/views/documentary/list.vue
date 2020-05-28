@@ -117,6 +117,12 @@ export default {
         case 3: {
           return '微信QQ沟通';
         }
+        case 4:{
+          return 'Email沟通';
+        }
+        case 5:{
+          return '其他方式沟通';
+        }
       }
     },
     formatterDocumentaryProgress(key) {

@@ -24,6 +24,14 @@ export function fetchCustomer(uuid) {
   })
 }
 
+export function realDel(id) {
+  return request({
+    url: '/index.php?m=api&c=customer&f=realDelete',
+    method: 'get',
+    params: { id }
+  })
+}
+
 export function del(id) {
   return request({
     url: '/index.php?m=api&c=customer&f=delete',

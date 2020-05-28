@@ -183,8 +183,8 @@ import { searchCustomer } from '@/api/remote-search';
 import { generateUUID } from '@/utils';
 
 const defaultForm = {
-  status: 'draft',
-  uuid: generateUUID(),
+  id: null,
+  uuid: null,
   userid: null,
   customerId: null,
   DocumentaryContact: null,
@@ -303,7 +303,9 @@ export default {
   },
   created() {
     const uuid = this.$route.params && this.$route.params.uuid;
-    this.fetchData(uuid);
+    if(uuid){
+      this.fetchData(uuid);
+    }
     this.getUser();
   },
   methods: {
@@ -347,7 +349,10 @@ export default {
       this.postForm.NextContact = new Date(this.postForm.NextContact).getTime() / 1000;
       this.$refs.postForm.validate(valid => {
         if (valid) {
-          this.loading = true
+          this.loading = true;
+          if(!this.postForm.id){
+            this.postForm.uuid = generateUUID();
+          }
           saveDocumentary(this.postForm).then(response => {
             this.$refs.postForm.resetFields();
             this.$refs.postForm.remarks = null;
